@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/08 17:10:51 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/08 20:42:45 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	main(void)
 			write(1, "exit\n", 5);
 			break ;
 		}
+
+		add_history(line);
 
 		if (check_all_syntax(line))
 		{
