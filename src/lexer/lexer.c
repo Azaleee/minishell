@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:34:57 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/08 20:38:52 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/09 13:18:52 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,11 @@ char	*parse_word(char *line, size_t *i)
 {
 	size_t	start;
 
-	start =  *i;
+	start = *i;
 	while (line[*i] != '\0')
 	{
 		if ((line[*i] == ' ' || is_operator(line[*i])) && !if_in_quote(line, i))
-		{
-			break;
-		}
+			break ;
 		(*i)++;
 	}
 	return (ft_substr(&line[start], 0, *i - start));
@@ -41,8 +39,8 @@ char	*parse_word(char *line, size_t *i)
 void	tokenization(t_minishell *minishell, char *line)
 {
 	size_t	i;
-	char *value;
-	
+	char	*value;
+
 	i = 0;
 	while (line[i])
 	{
@@ -51,7 +49,8 @@ void	tokenization(t_minishell *minishell, char *line)
 		else if (is_operator(line[i]) && if_in_quote(line, &i) == FALSE)
 		{
 			value = get_operator(line, &i);
-			add_back_token(&minishell->input, new_token(value, determine_operator(value)));
+			add_back_token(&minishell->input, new_token(value,
+					determine_operator(value)));
 		}
 		else
 		{
@@ -60,5 +59,5 @@ void	tokenization(t_minishell *minishell, char *line)
 		}
 	}
 	add_back_token(&minishell->input, new_token(NULL, T_EOF));
-	display_tokens(minishell->input);
+	// display_tokens(minishell->input);
 }

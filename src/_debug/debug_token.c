@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 19:21:08 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/08 20:32:16 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/09 12:12:25 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	print_input(t_minishell *minishell)
 	current = minishell->input;
 	while (current->token_type != 9)
 	{
-		printf("Value -> %s\tToken -> %u\n", (char *)current->value, current->token_type);
+		printf("Value -> %s\tToken -> %u\n", (char *)current->value,
+			current->token_type);
 		current = current->next;
 	}
 }
@@ -41,14 +42,15 @@ const char	*get_token_type_name(t_token_type type)
 
 void	display_tokens(t_lexer *tokens)
 {
-	t_lexer	*token;
+	t_lexer *token;
 
 	token = tokens;
 	while (token)
 	{
 		ft_printf("Token: \033[0;36m %s \033[0m |\t \
-			Type: \033[0;35m %s \033[0m \n", token->value,
-			get_token_type_name(token->token_type));
+			Type: \033[0;35m %s \033[0m \n",
+					token->value,
+					get_token_type_name(token->token_type));
 		ft_printf("--------------------------------------------------\n");
 		token = token->next;
 	}

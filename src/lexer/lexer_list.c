@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:24:58 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/08 11:40:52 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/09 20:22:30 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	add_back_token(t_lexer **lst, t_lexer *new)
 	}
 	current->next = new;
 }
-
 
 void	token_clear(t_minishell *minishell)
 {

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:35:08 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/08 20:38:57 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/09 13:18:21 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ char	*get_operator(char *input, size_t *i)
 {
 	char	*value;
 
-	if (input[*i] == '<' && input[*i+1] == '<')
+	if (input[*i] == '<' && input[*i + 1] == '<')
 	{
 		(*i)++;
 		value = ft_strndup("<<", 2);
 	}
-	else if (input[*i] == '>' && input[*i+1] == '>')
+	else if (input[*i] == '>' && input[*i + 1] == '>')
 	{
 		(*i)++;
 		value = ft_strndup(">>", 2);
@@ -55,7 +55,7 @@ t_token_type	determine_operator(char *value)
 
 // "in quote | "
 
-int	if_in_quote(char *line, size_t *i)
+char	if_in_quote(char *line, size_t *i)
 {
 	size_t	j;
 	char	quote_char;
@@ -70,5 +70,5 @@ int	if_in_quote(char *line, size_t *i)
 			quote_char = '\0';
 		j++;
 	}
-	return (quote_char != '\0');
+	return (quote_char);
 }

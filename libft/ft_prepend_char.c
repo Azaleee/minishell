@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_prepend_char.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 17:58:50 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 20:20:35 by mosmont          ###   ########.fr       */
+/*   Created: 2025/01/09 16:51:28 by mosmont           #+#    #+#             */
+/*   Updated: 2025/01/09 16:57:18 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-	strlen function is used to calculate the lenght of a string
-*/
-
-size_t	ft_strlen(const char *str)
+char	*ft_prepend_char(const char *str, char c)
 {
-	int	i;
+	size_t	len;
+	char	*new_str;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	len = strlen(str);
+	new_str = malloc(len + 2);
+	if (!new_str)
+		return (NULL);
+	new_str[0] = c;
+	strcpy(new_str + 1, str);
+	return (new_str);
 }

@@ -48,6 +48,7 @@ SRC = 				ft_isalnum.c \
 					ft_putnbr_fd.c \
 					ft_printf/ft_printf_utils.c \
 					ft_printf/ft_printf.c \
+					ft_prepend_char.c
 
 OBJ = $(SRC:.c=.o)
 

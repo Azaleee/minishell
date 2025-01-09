@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/08 20:32:28 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/09 20:21:26 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # define TRUE 1
 # define FALSE 0
+
+// int	error_code;
 
 typedef enum	e_token_type
 {
@@ -70,8 +72,11 @@ void			token_clear(t_minishell *minishell);
 char			*get_operator(char *input, size_t *i);
 int				is_operator(char c);
 t_token_type	determine_operator(char *value);
-int				if_in_quote(char *line, size_t *i);
+char			if_in_quote(char *line, size_t *i);
 
+// PARSER PART
+
+void			clean_word_token(t_minishell *minishell, char **env);
 
 // UTILS
 int				if_quote_unclosed(char *line);
@@ -79,7 +84,6 @@ int				check_all_syntax(char *line);
 
 	// PRINT ERROR
 int				syntax_checker(char *msg_error, char *arg, char *line, int (*check)(char *));
-
 
 // DEBUG FUNC
 void			print_input(t_minishell *minishell);

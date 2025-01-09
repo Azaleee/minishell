@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:01:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/07 22:12:31 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/09 16:52:29 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,7 @@ size_t				ft_putnbr(int nb);
 size_t				ft_putadr(void *adr, const char *hexa_tab);
 size_t				ft_putunbr(unsigned int nb);
 size_t				ft_puthexa(unsigned int nb, char *hexa);
+
+char				*ft_prepend_char(const char *str, char c);
 
 #endif
