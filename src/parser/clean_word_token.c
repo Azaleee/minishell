@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 21:12:55 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/10 16:13:07 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*replace_env_var(char *value, char **env)
 			if (!env_var)
 			{
 				i++;
-				continue;
+				continue ;
 			}
 			env_value = get_env_value(env_var, env);
 			value = replace_actual(value, env_value, env_var, start);
@@ -101,7 +101,7 @@ char	*replace_env_var(char *value, char **env)
 
 void	clean_word_token(t_minishell *minishell, char **env)
 {
-	t_lexer *current;
+	t_lexer	*current;
 
 	current = minishell->input;
 	while (current->token_type != T_EOF)
@@ -109,6 +109,7 @@ void	clean_word_token(t_minishell *minishell, char **env)
 		if (current->token_type == WORD)
 		{
 			current->value = replace_env_var(current->value, env);
+			remove_quote(current->value);
 		}
 		printf("New value = %s\n", (char *)current->value);
 		current = current->next;

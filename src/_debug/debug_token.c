@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 19:21:08 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 12:12:25 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/10 15:44:50 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ const char	*get_token_type_name(t_token_type type)
 	const char	*token_type_names[7];
 
 	token_type_names[0] = "WORD";
-	token_type_names[1] = "PIPE";
-	token_type_names[2] = "REDIRECT_IN";
-	token_type_names[3] = "REDIRECT_OUT";
+	token_type_names[1] = "REDIRECT_IN";
+	token_type_names[2] = "REDIRECT_OUT";
+	token_type_names[3] = "REDIRECT_HEREDOC";
 	token_type_names[4] = "REDIRECT_APPEND";
-	token_type_names[5] = "REDIRECT_HEREDOC";
+	token_type_names[5] = "PIPE";
 	if (type >= 0 && type < 6)
 		return (token_type_names[type]);
 	return ("UNKNOWN");

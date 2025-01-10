@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 20:21:26 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/10 16:15:45 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ char			if_in_quote(char *line, size_t *i);
 void			clean_word_token(t_minishell *minishell, char **env);
 
 // UTILS
-int				if_quote_unclosed(char *line);
+int				if_quote_close(char *line);
 int				check_all_syntax(char *line);
+char			if_in_quote(char *line, size_t *i);
+void			remove_quote(char *line);
 
 	// PRINT ERROR
 int				syntax_checker(char *msg_error, char *arg, char *line, int (*check)(char *));

@@ -6,35 +6,11 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:34:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 13:13:48 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/10 15:33:20 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	if_quote_close(char *line)
-{
-	int		i;
-	int		in_quote;
-	char	quote_char;
-
-	i = 0;
-	in_quote = 0;
-	while (line[i])
-	{
-		if ((line[i] == '\'' || line[i] == '"') && in_quote == 0)
-		{
-			in_quote = 1;
-			quote_char = line[i];
-		}
-		else if (line[i] == quote_char && in_quote == 1)
-			in_quote = 0;
-		i++;
-	}
-	if (in_quote == 0)
-		return (FALSE);
-	return (TRUE);
-}
 
 int	if_pipe_misplaced(char *line)
 {
