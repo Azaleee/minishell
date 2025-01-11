@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/10 16:15:45 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:52:06 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,19 @@ typedef struct	s_lexer
 	struct s_lexer		*next;
 }						t_lexer;
 
+typedef struct	s_cmds
+{
+	char				**args;
+	char				*input_file;
+	char				*output_file;
+	struct s_cmds		*next;
+}						t_cmds;
+
 typedef struct	minishell
 {
-	t_lexer	*input;
-}				t_minishell;
+	t_lexer				*input;
+	t_cmds				*cmds;
+}						t_minishell;
 
 // LEXER PART
 
@@ -78,11 +87,14 @@ char			if_in_quote(char *line, size_t *i);
 
 void			clean_word_token(t_minishell *minishell, char **env);
 
+t_cmds			*fill_cmds(t_lexer *tokens, t_cmds *cmds);
+
 // UTILS
 int				if_quote_close(char *line);
 int				check_all_syntax(char *line);
 char			if_in_quote(char *line, size_t *i);
 void			remove_quote(char *line);
+void			free_tab(char **tab);
 
 	// PRINT ERROR
 int				syntax_checker(char *msg_error, char *arg, char *line, int (*check)(char *));

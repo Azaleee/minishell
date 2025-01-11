@@ -20,13 +20,13 @@ LEXER_DIR =		lexer/
 LEXER_FILES =	lexer.c lexer_list.c lexer_utils.c
 
 UTILS_DIR =		utils/
-UTILS_FILES =	check_syntax.c handle_error.c quote_handler.c
+UTILS_FILES =	check_syntax.c handle_error.c quote_handler.c free_func.c
 
 DEBUG_DIR =		_debug/
 DEBUG_FILES =	debug_token.c
 
 PARSER_DIR =	parser/
-PARSER_FILES =	clean_word_token.c
+PARSER_FILES =	clean_word_token.c get_cmds.c
 
 SRC_FILES = main.c \
 			$(addprefix $(LEXER_DIR), $(LEXER_FILES)) \

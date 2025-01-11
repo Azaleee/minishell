@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 20:22:08 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:57:21 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **env)
 		{
 			tokenization(minishell, line);
 			clean_word_token(minishell, env);
+			// minishell->cmds = fill_cmds(minishell->input, minishell->cmds);
 			token_clear(minishell);
 		}
 
