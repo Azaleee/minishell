@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:35:08 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/10 15:33:39 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 20:46:36 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ char	*get_operator(char *input, size_t *i)
 	if (input[*i] == '<' && input[*i + 1] == '<')
 	{
 		(*i)++;
-		value = ft_strndup("<<", 2);
+		value = ft_strdup("<<");
 	}
 	else if (input[*i] == '>' && input[*i + 1] == '>')
 	{
 		(*i)++;
-		value = ft_strndup(">>", 2);
+		value = ft_strdup(">>");
 	}
 	else
-		value = ft_strndup(&input[*i], 1);
+		value = ft_substr(&input[*i], 0, 1);
 	(*i)++;
 	return (value);
 }

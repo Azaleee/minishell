@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:24:58 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 20:22:30 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 18:11:42 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,41 @@ void	token_clear(t_minishell *minishell)
 	while (current)
 	{
 		temp = current->next;
-		free(current->value);
-		free(current);
+		if (current->value)
+			free(current->value);
+		if (current)
+			free(current);
 		current = temp;
 	}
 	minishell->input = NULL;
+}
+
+void	*get_next_token(void *node)
+{
+	return ((t_lexer *)node)->next;
+}
+
+void	set_next_token(void *node, void *next)
+{
+	((t_lexer *)node)->next = (t_lexer *)next;
+}
+
+void	lst_add_back(void **lst, void *new_node, void *(*get_next)(void *),
+		void (*set_next)(void *, void *))
+{
+	void	*current;
+
+	if (!new_node)
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = new_node;
+		return ;
+	}
+	current = *lst;
+	while (get_next(current))
+	{
+		current = get_next(current);
+	}
+	set_next(current, new_node);
 }

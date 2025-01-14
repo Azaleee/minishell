@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/10 18:52:06 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 21:15:16 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <errno.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -37,8 +38,8 @@ typedef enum	e_token_type
 	WORD,
 	LESS,
 	GREAT,
-	DLESS,
 	DGREAT,
+	DLESS,
 	PIPE,
 	DOLLAR,
 	S_QUOTE,
@@ -53,18 +54,27 @@ typedef struct	s_lexer
 	struct s_lexer		*next;
 }						t_lexer;
 
+typedef struct 	s_args
+{
+	char				*arg;
+	struct s_args		*next;
+}						t_args;
+
+
 typedef struct	s_cmds
 {
-	char				**args;
+	t_args				*args;
 	char				*input_file;
 	char				*output_file;
+	int					is_append;
 	struct s_cmds		*next;
 }						t_cmds;
 
-typedef struct	minishell
+typedef struct	s_minishell
 {
 	t_lexer				*input;
 	t_cmds				*cmds;
+	char				**env;
 }						t_minishell;
 
 // LEXER PART
@@ -81,20 +91,27 @@ void			token_clear(t_minishell *minishell);
 char			*get_operator(char *input, size_t *i);
 int				is_operator(char c);
 t_token_type	determine_operator(char *value);
-char			if_in_quote(char *line, size_t *i);
 
 // PARSER PART
 
 void			clean_word_token(t_minishell *minishell, char **env);
 
-t_cmds			*fill_cmds(t_lexer *tokens, t_cmds *cmds);
+void			fill_struct_cmds(t_cmds **cmds, t_lexer *token);
+void			cmds_clear(t_minishell *minishell);
 
 // UTILS
 int				if_quote_close(char *line);
 int				check_all_syntax(char *line);
+int				syntax_token_good(t_lexer *token);
 char			if_in_quote(char *line, size_t *i);
 void			remove_quote(char *line);
 void			free_tab(char **tab);
+
+// LIST MANAGER
+void			lst_add_back(void **lst, void *new_node, void *(*get_next)(void *),
+					void (*set_next)(void *, void *));
+void			set_next_token(void *node, void *next);
+void			*get_next_token(void *node);
 
 	// PRINT ERROR
 int				syntax_checker(char *msg_error, char *arg, char *line, int (*check)(char *));

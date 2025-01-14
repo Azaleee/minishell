@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/10 17:07:00 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 21:24:25 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_env_var(char *value, size_t *start)
 	if (j == i)
 		return (NULL);
 	if (value[j] == '?')
-		return (ft_strndup(&value[j], 1));
+		return (ft_strdup(&value[j]));
 	*start = j;
 	return (ft_substr(value, i, j - i));
 }
@@ -60,11 +60,19 @@ char	*get_env_value(char *env_var, char **env)
 char	*replace_actual(char *value, char *env_value, char *env_var, size_t start)
 {
 	char	*temp;
+	char	*new_str;
+	char	*start_of_str;
 	size_t	env_var_l;
 
 	env_var_l = ft_strlen(env_var);
-	temp = ft_strjoin(ft_substr(value, 0, start), env_value);
-	return (ft_strjoin(temp, &value[start + env_var_l + 1]));
+	start_of_str = ft_substr(value, 0, start);
+	temp = ft_strjoin(start_of_str, env_value);
+	new_str = ft_strjoin(temp, &value[start + env_var_l + 1]);
+	free(temp);
+	free(value);
+	free(start_of_str);
+	free(env_var);
+	return (new_str);
 }
 
 char	*replace_env_var(char *value, char **env)
@@ -89,9 +97,7 @@ char	*replace_env_var(char *value, char **env)
 			}
 			env_value = get_env_value(env_var, env);
 			value = replace_actual(value, env_value, env_var, start);
-			i = start;
-			if (env_value)
-				i += ft_strlen(env_value);
+			i = start + ft_strlen(env_value);
 		}
 		else
 			i++;

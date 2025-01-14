@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:35:27 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/07 22:13:19 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 20:41:56 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 // 	t_list	*new_list;
 // 	t_list	*temp;
 
-// 	lst = ft_lstnew(ft_strndup("abc"));
-// 	lst->next = ft_lstnew(ft_strndup("def"));
+// 	lst = ft_lstnew(ft_strdup("abc"));
+// 	lst->next = ft_lstnew(ft_strdup("def"));
 // 	new_list = ft_lstmap(lst, &f_lst, &del_lst);
 // 	temp = new_list;
 // 	while (temp)

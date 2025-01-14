@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 21:37:00 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/07 22:13:36 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 20:46:07 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_itoa(int n)
 	int		len;
 
 	if (n == -2147483648)
-		return ((char *)ft_strndup("-2147483648", 12));
+		return ((char *)ft_strdup("-2147483648"));
 	len = int_len(n);
 	i = 0;
 	result = malloc((len + 1) * sizeof(char));

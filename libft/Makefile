@@ -33,7 +33,7 @@ SRC = 				ft_isalnum.c \
 					ft_strnstr.c \
 					ft_atoi.c \
 					ft_atol.c \
-					ft_strndup.c \
+					ft_strdup.c \
 					ft_calloc.c \
 					ft_strjoin.c \
 					ft_putchar_fd.c \
@@ -48,7 +48,9 @@ SRC = 				ft_isalnum.c \
 					ft_putnbr_fd.c \
 					ft_printf/ft_printf_utils.c \
 					ft_printf/ft_printf.c \
-					ft_prepend_char.c
+					ft_prepend_char.c \
+					get_next_line.c \
+					get_next_line_utils.c
 
 OBJ = $(SRC:.c=.o)
 

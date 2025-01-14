@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 17:56:53 by mosmont           #+#    #+#             */
-/*   Updated: 2024/10/24 15:31:27 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 14:54:04 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static int	count_words(char const *str, char c)
 	return (result);
 }
 
-static int	word_lenght(const char *s, char c)
+static int	word_lenght(char const *s, char c)
 {
 	int	i;
 

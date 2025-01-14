@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 15:32:41 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/10 16:24:52 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 21:22:59 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	if_quote_close(char *line)
 
 	i = 0;
 	in_quote = 0;
+	quote_char = '\0';
 	while (line[i])
 	{
 		if ((line[i] == '\'' || line[i] == '"') && in_quote == 0)
@@ -46,7 +47,10 @@ char	if_in_quote(char *line, size_t *i)
 	while (j < *i)
 	{
 		if ((line[j] == '\'' || line[j] == '"') && quote_char == '\0')
+		{	
 			quote_char = line[j];
+			printf("WUOTTT");		
+		}
 		else if (line[j] == quote_char)
 			quote_char = '\0';
 		j++;

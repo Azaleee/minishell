@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 17:57:56 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/07 22:12:13 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 20:44:06 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 	to this memory
 */
 
-char	*ft_strndup(const char *s, size_t len)
+char	*ft_strdup(const char *s)
 {
 	int		i;
 	char	*final;
@@ -27,10 +27,9 @@ char	*ft_strndup(const char *s, size_t len)
 	if (!final)
 		return (NULL);
 	i = 0;
-	while (s[i] != '\0' && len)
+	while (s[i] != '\0')
 	{
 		final[i] = s[i];
-		len--;
 		i++;
 	}
 	final[i] = '\0';

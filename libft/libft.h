@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:01:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/09 16:52:29 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/14 20:43:40 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # include <string.h>
 # include <unistd.h>
 # include <limits.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
 // typedef enum	e_token_type
 // {
@@ -59,7 +63,7 @@ void				*ft_calloc(size_t nmemb, size_t size);
 
 size_t				ft_strlen(const char *str);
 size_t				ft_strlcpy(char *dest, const char *src, size_t size);
-char				*ft_strndup(const char *s, size_t len);
+char				*ft_strdup(const char *s);
 size_t				ft_strlcat(char *dest, const char *src, size_t size);
 char				*ft_strchr(const char *str, int c);
 char				*ft_strrchr(const char *str, int c);
@@ -112,5 +116,14 @@ size_t				ft_putunbr(unsigned int nb);
 size_t				ft_puthexa(unsigned int nb, char *hexa);
 
 char				*ft_prepend_char(const char *str, char c);
+
+char				*get_next_line(int fd);
+char				*read_line(int fd, char *buffer, char *line);
+void				cut_buffer(char *buffer);
+
+char				*ft_strjoin_gnl(char *string1, char *string2);
+size_t				ft_strlen_gnl(char *string);
+int					check_eof(char *string);
+size_t				eof_index(char *string);
 
 #endif

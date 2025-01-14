@@ -1,7 +1,7 @@
 NAME = 			minishell
 
 CC = 			cc
-CFLAGS = 		#-Wall -Wextra -Werror
+CFLAGS = 		-g#-Wall -Wextra -Werror
 
 GREEN = 		\\033[0;32m
 YELLOW = 		\\033[0;33m
@@ -20,7 +20,7 @@ LEXER_DIR =		lexer/
 LEXER_FILES =	lexer.c lexer_list.c lexer_utils.c
 
 UTILS_DIR =		utils/
-UTILS_FILES =	check_syntax.c handle_error.c quote_handler.c free_func.c
+UTILS_FILES =	check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c
 
 DEBUG_DIR =		_debug/
 DEBUG_FILES =	debug_token.c
