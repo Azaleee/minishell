@@ -28,11 +28,19 @@ DEBUG_FILES =	debug_token.c
 PARSER_DIR =	parser/
 PARSER_FILES =	clean_word_token.c get_cmds.c
 
+EXEC_DIR =		exec/
+EXEC_FILES =	exec.c
+
+BUILTIN_DIR =	exec/builtins/
+BUILTIN_FILES = pwd.c
+
 SRC_FILES = main.c \
 			$(addprefix $(LEXER_DIR), $(LEXER_FILES)) \
 			$(addprefix $(UTILS_DIR), $(UTILS_FILES)) \
 			$(addprefix $(DEBUG_DIR), $(DEBUG_FILES)) \
-			$(addprefix $(PARSER_DIR), $(PARSER_FILES)) 
+			$(addprefix $(PARSER_DIR), $(PARSER_FILES)) \
+			$(addprefix $(EXEC_DIR), $(EXEC_FILES)) \
+			$(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES))
 			
 OBJ_FILES = $(SRC_FILES:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:24:58 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 18:11:42 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/16 21:23:14 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,11 @@ void	token_clear(t_minishell *minishell)
 	{
 		temp = current->next;
 		if (current->value)
+		{
+			// printf("Freeing value: %s\n", (char *)current->value);
 			free(current->value);
+			current->value = NULL;
+		}
 		if (current)
 			free(current);
 		current = temp;

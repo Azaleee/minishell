@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 21:15:16 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/16 22:47:53 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <errno.h>
+# include <sys/wait.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -31,7 +32,7 @@
 # define TRUE 1
 # define FALSE 0
 
-// int	error_code;
+extern int	error_code;
 
 typedef enum	e_token_type
 {
@@ -60,22 +61,37 @@ typedef struct 	s_args
 	struct s_args		*next;
 }						t_args;
 
-
 typedef struct	s_cmds
 {
 	t_args				*args;
 	char				*input_file;
 	char				*output_file;
+	char				*path_cmd;
 	int					is_append;
+	int					error_file;
 	struct s_cmds		*next;
 }						t_cmds;
+
+typedef struct	s_env
+{
+	char				*env_name;
+	char				*env_value;
+	struct s_env		*next;
+}						t_env;
 
 typedef struct	s_minishell
 {
 	t_lexer				*input;
 	t_cmds				*cmds;
 	char				**env;
+	int					**pipes;
+	pid_t				*pid;
+	int					nb_cmd;
+	int					exit_code;
 }						t_minishell;
+
+
+int	pwd(void);
 
 // LEXER PART
 
@@ -106,6 +122,9 @@ int				syntax_token_good(t_lexer *token);
 char			if_in_quote(char *line, size_t *i);
 void			remove_quote(char *line);
 void			free_tab(char **tab);
+void			free_all(t_minishell *minishell);
+
+void			execute_all(t_minishell *minishell);
 
 // LIST MANAGER
 void			lst_add_back(void **lst, void *new_node, void *(*get_next)(void *),

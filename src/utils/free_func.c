@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:47:24 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 12:58:48 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/16 21:16:35 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,22 @@
 
 void	free_tab(char **tab)
 {
-	char	**temp;
+	int	i;
 
-	temp = tab;
-	while (tab && *tab)
+	i = 0;
+	if (tab == NULL)
+		return ;
+	else
 	{
-		free(*tab);
-		tab++;
+		while (tab[i] != NULL)
+		{
+			free(tab[i]);
+			tab[i] = NULL;
+			i++;
+		}
+		free(tab);
+		tab = NULL;
 	}
-	free(temp);
-	temp = NULL;
-	tab = NULL;
 }
 
 // void	free_all(t_minishell *minishell)

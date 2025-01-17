@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 21:24:25 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/16 19:30:13 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ char	*get_env_var(char *value, size_t *start)
 		j++;
 	if (j == i)
 		return (NULL);
+	*start = j;
 	if (value[j] == '?')
 		return (ft_strdup(&value[j]));
-	*start = j;
 	return (ft_substr(value, i, j - i));
 }
 
@@ -44,7 +44,7 @@ char	*get_env_value(char *env_var, char **env)
 	i = 0;
 	j = 0;
 	if (strncmp(env_var, "?", 1) == 0)
-		return (ft_itoa(0)); // IMPORTANT CHANGER
+		return (ft_itoa(error_code)); // IMPORTANT CHANGER
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], env_var, ft_strlen(env_var)) == 0
@@ -75,14 +75,12 @@ char	*replace_actual(char *value, char *env_value, char *env_var, size_t start)
 	return (new_str);
 }
 
-char	*replace_env_var(char *value, char **env)
+char	*replace_env_var(char *value, char **env, size_t i)
 {
 	char	*env_var;
 	char	*env_value;
-	size_t	i;
 	size_t	start;
 
-	i = 0;
 	while (value[i])
 	{
 		if (value[i] == '$' && (if_in_quote(value, &i) == '"'
@@ -110,14 +108,14 @@ void	clean_word_token(t_minishell *minishell, char **env)
 	t_lexer	*current;
 
 	current = minishell->input;
-	while (current->token_type != T_EOF)
+	while (current)
 	{
 		if (current->token_type == WORD)
 		{
-			current->value = replace_env_var(current->value, env);
+			current->value = replace_env_var(current->value, env, 0);
 			remove_quote(current->value);
 		}
-		printf("New value = %s\n", (char *)current->value);
+		// printf("New value = %s\n", (char *)current->value);
 		current = current->next;
 	}
 }

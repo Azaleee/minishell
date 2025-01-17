@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:34:57 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 19:31:26 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/16 23:26:47 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ void	tokenization(t_minishell *minishell, char *line)
 				set_next_token);
 		}
 	}
-	add_back_token(&minishell->input, new_token(NULL, T_EOF));
-	display_tokens(minishell->input);
+	// add_back_token(&minishell->input, new_token(NULL, T_EOF));
+	// display_tokens(minishell->input);
 }
