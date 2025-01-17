@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_word_token.c                                 :+:      :+:    :+:   */
+/*   setter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:13:27 by mosmont          ###   ########.fr       */
+/*   Created: 2025/01/17 17:26:34 by mosmont           #+#    #+#             */
+/*   Updated: 2025/01/17 19:15:25 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-void	clean_word_token(t_minishell *minishell, char **env)
+void	set_next_cmd(void *node, void *next)
 {
-	t_lexer	*current;
+	((t_cmds *)node)->next = next;
+}
 
-	current = minishell->input;
-	while (current)
-	{
-		if (current->token_type == WORD)
-		{
-			current->value = expand_env_var(current->value, env, 0);
-			remove_quote(current->value);
-		}
-		current = current->next;
-	}
+void	set_next_args(void *node, void *next)
+{
+	((t_args *)node)->next = (t_args *)next;
+}
+
+void	set_next_token(void *node, void *next)
+{
+	((t_lexer *)node)->next = (t_lexer *)next;
 }

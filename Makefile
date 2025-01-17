@@ -1,38 +1,41 @@
-NAME = 			minishell
+NAME = 				minishell
 
-CC = 			cc
-CFLAGS = 		-g#-Wall -Wextra -Werror
+CC = 				cc
+CFLAGS = 			-g -Wall -Wextra -Werror
 
-GREEN = 		\\033[0;32m
-YELLOW = 		\\033[0;33m
-RED = 			\\033[0;31m
-BLUE = 			\\033[0;34m
-MAGENTA = 		\033[0;35m
-CYAN = 			\033[0;36m
-RESET = 		\\033[0m
+GREEN = 			\\033[0;32m
+YELLOW = 			\\033[0;33m
+RED = 				\\033[0;31m
+BLUE = 				\\033[0;34m
+MAGENTA = 			\033[0;35m
+CYAN = 				\033[0;36m
+RESET = 			\\033[0m
 
-LIBFT_DIR =		libft
-INCLUDES =		includes/
-SRC_DIR =		src/
-OBJ_DIR =		obj/
+LIBFT_DIR =			libft
+INCLUDES =			includes/
+SRC_DIR =			src/
+OBJ_DIR =			obj/
 
-LEXER_DIR =		lexer/
-LEXER_FILES =	lexer.c lexer_list.c lexer_utils.c
+LEXER_DIR =			lexer/
+LEXER_FILES =		lexer.c lexer_utils.c
 
-UTILS_DIR =		utils/
-UTILS_FILES =	check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c
+UTILS_DIR =			utils/
+UTILS_FILES =		check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c env_utils.c
 
-DEBUG_DIR =		_debug/
-DEBUG_FILES =	debug_token.c
+LIST_HANDLE_DIR =	utils/list_handle/
+LIST_HANDLE_FILES =	getter.c setter.c lst_add_back.c lst_init.c lst_clear.c
 
-PARSER_DIR =	parser/
-PARSER_FILES =	clean_word_token.c get_cmds.c
+DEBUG_DIR =			_debug/
+DEBUG_FILES =		debug_token.c debug_cmd.c
 
-EXEC_DIR =		exec/
-EXEC_FILES =	exec.c
+PARSER_DIR =		parser/
+PARSER_FILES =		clean_word_token.c fill_cmd.c heredoc_handle.c parse_redirection.c expand_env_var.c
 
-BUILTIN_DIR =	exec/builtins/
-BUILTIN_FILES = pwd.c
+EXEC_DIR =			exec/
+EXEC_FILES =		exec.c cmd_manager.c pipes_manager.c set_redirection.c
+
+BUILTIN_DIR =		exec/builtins/
+BUILTIN_FILES = 	pwd.c cd.c builtins_handler.c
 
 SRC_FILES = main.c \
 			$(addprefix $(LEXER_DIR), $(LEXER_FILES)) \
@@ -40,7 +43,8 @@ SRC_FILES = main.c \
 			$(addprefix $(DEBUG_DIR), $(DEBUG_FILES)) \
 			$(addprefix $(PARSER_DIR), $(PARSER_FILES)) \
 			$(addprefix $(EXEC_DIR), $(EXEC_FILES)) \
-			$(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES))
+			$(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES)) \
+			$(addprefix $(LIST_HANDLE_DIR), $(LIST_HANDLE_FILES))
 			
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
@@ -49,11 +53,11 @@ OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-all: setup $(LIBFT) $(NAME)
+all: $(LIBFT) $(NAME)
 
-setup:
-	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/$(LEXER_DIR) \
-	$(DEBUG_DIR)/$(DEBUG_FILES)
+# setup:
+# 	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/$(LEXER_DIR) \
+# 	$(DEBUG_DIR)/$(DEBUG_FILES)
 
 $(LIBFT):
 	@echo "$(CYAN)Compiling libft...$(RESET)"

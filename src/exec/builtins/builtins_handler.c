@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_word_token.c                                 :+:      :+:    :+:   */
+/*   builtins_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:13:27 by mosmont          ###   ########.fr       */
+/*   Created: 2025/01/17 18:12:49 by mosmont           #+#    #+#             */
+/*   Updated: 2025/01/17 19:32:23 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-void	clean_word_token(t_minishell *minishell, char **env)
+int	is_builtin(char *cmd)
 {
-	t_lexer	*current;
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (1);
+	return (0);
+}
 
-	current = minishell->input;
-	while (current)
-	{
-		if (current->token_type == WORD)
-		{
-			current->value = expand_env_var(current->value, env, 0);
-			remove_quote(current->value);
-		}
-		current = current->next;
-	}
+void	execute_builtin(t_cmds *cmd, t_minishell *minishell, int builtin_id)
+{
+	(void)minishell;
+	(void)cmd;
+	if (builtin_id == 1)
+		pwd();
 }

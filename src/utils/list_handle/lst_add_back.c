@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_word_token.c                                 :+:      :+:    :+:   */
+/*   lst_add_back.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:13:27 by mosmont          ###   ########.fr       */
+/*   Created: 2025/01/17 17:47:25 by mosmont           #+#    #+#             */
+/*   Updated: 2025/01/17 19:22:24 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-void	clean_word_token(t_minishell *minishell, char **env)
+void	lst_add_back(void **lst, void *new_node, void *(*get_next)(void *),
+		void (*set_next)(void *, void *))
 {
-	t_lexer	*current;
+	void	*current;
 
-	current = minishell->input;
-	while (current)
+	if (!new_node)
+		return ;
+	if (*lst == NULL)
 	{
-		if (current->token_type == WORD)
-		{
-			current->value = expand_env_var(current->value, env, 0);
-			remove_quote(current->value);
-		}
-		current = current->next;
+		*lst = new_node;
+		return ;
 	}
+	current = *lst;
+	while (get_next(current))
+	{
+		current = get_next(current);
+	}
+	set_next(current, new_node);
 }

@@ -6,26 +6,13 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 19:21:08 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 20:07:37 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:11:47 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	print_input(t_minishell *minishell)
-{
-	t_lexer	*current;
-
-	current = minishell->input;
-	while (current->token_type != 9)
-	{
-		printf("Value -> %s\tToken -> %u\n", (char *)current->value,
-			current->token_type);
-		current = current->next;
-	}
-}
-
-const char	*get_token_type_name(t_token_type type)
+const char	*get_tok_t_name(t_tok_t type)
 {
 	const char	*token_type_names[7];
 
@@ -42,15 +29,15 @@ const char	*get_token_type_name(t_token_type type)
 
 void	display_tokens(t_lexer *tokens)
 {
-	t_lexer *token;
+	t_lexer	*token;
 
 	token = tokens;
 	while (token)
 	{
 		ft_printf("Token: \033[0;36m %s \033[0m |\t \
 			Type: \033[0;35m %s \033[0m \n",
-					token->value,
-					get_token_type_name(token->token_type));
+			token->value,
+			get_tok_t_name(token->token_type));
 		ft_printf("--------------------------------------------------\n");
 		token = token->next;
 	}

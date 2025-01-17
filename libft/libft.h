@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:01:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 20:43:40 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:10:51 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@
 // 	S_QUOTE,
 // 	D_QUOTE,
 // 	T_EOF
-// }				t_token_type;
+// }				t_tok_t;
 
 // typedef struct	s_lexer
 // {
 // 	char				*value;
-// 	t_token_type		token_type;
+// 	t_tok_t		token_type;
 // 	struct s_lexer		*next;
 // 	struct s_lexer		*prev;
 // }						t_lexer;

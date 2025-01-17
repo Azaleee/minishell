@@ -1,0 +1,67 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes_manager.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 18:32:15 by mosmont           #+#    #+#             */
+/*   Updated: 2025/01/17 19:23:36 by mosmont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+void	init_pipes(t_minishell *minishell, int nb_cmd)
+{
+	int	i;
+
+	i = 0;
+	minishell->pipes = malloc(sizeof(int *) * (nb_cmd - 1));
+	if (!minishell->pipes)
+		exit(EXIT_FAILURE);
+	while (i < nb_cmd - 1)
+	{
+		minishell->pipes[i] = malloc(sizeof(int) * 2);
+		if (pipe(minishell->pipes[i]) == -1)
+		{
+			printf("%d", i);
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+}
+
+void	free_pipes(t_minishell *minishell, int **tab)
+{
+	int	i;
+
+	i = 0;
+	if (tab == NULL)
+		return ;
+	else
+	{
+		while (i < minishell->nb_cmd - 1)
+		{
+			if (tab[i])
+				free(tab[i]);
+			i++;
+		}
+		free(tab);
+		tab = NULL;
+	}
+}
+
+void	close_all_pipes(t_minishell *minishell)
+{
+	int	i;
+
+	i = 0;
+	while (i < minishell->nb_cmd - 1)
+	{
+		close(minishell->pipes[i][0]);
+		close(minishell->pipes[i][1]);
+		i++;
+	}
+}

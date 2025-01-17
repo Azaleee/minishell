@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:35:08 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 20:46:36 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:12:48 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_operator(char *input, size_t *i)
 	return (value);
 }
 
-t_token_type	determine_operator(char *value)
+t_tok_t	determine_operator(char *value)
 {
 	if (value[0] == '|')
 		return (PIPE);
@@ -51,4 +51,18 @@ t_token_type	determine_operator(char *value)
 		return (GREAT);
 	else
 		return (-1);
+}
+
+char	*parse_word(char *line, size_t *i)
+{
+	size_t	start;
+
+	start = *i;
+	while (line[*i] != '\0')
+	{
+		if ((line[*i] == ' ' || is_operator(line[*i])) && !if_in_quote(line, i))
+			break ;
+		(*i)++;
+	}
+	return (ft_substr(&line[start], 0, *i - start));
 }

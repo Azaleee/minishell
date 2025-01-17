@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:00:54 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/14 20:46:18 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:20:40 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ft_strlcpy(sub, s + start, len + 1);
 	sub[len] = '\0';
 	return ((char *)sub);
-	// char	*new_str;
-	// size_t	i;
-
-	// if (!s)
-	// 	return (NULL);
-	// i = 0;
-	// new_str = &s[start];
-	// if (ft_strlen(s) < start + len)
-	// 	len = ft_strlen(s) - start;
-	// if (len > 0)
-	// {
-	// 	i = 0;
-	// 	while (new_str[i] && i < len)
-	// 		i++;
-	// 	if (i == len)
-	// 		new_str[i] = '\0';
-	// }
-	// return (new_str);
 }
 
 /*int	main(void)
