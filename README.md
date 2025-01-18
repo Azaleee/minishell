@@ -55,30 +55,6 @@ Minishell est un projet de l'école 42 visant à recréer un shell minimaliste e
 
 ## Structure du Projet
 
-### Arborescence des fichiers
-```
-minishell/
-├── Makefile
-├── src/
-│   ├── main.c
-│   ├── parser/
-│   │   └── lexer.c
-│   ├── executor/
-│   │   ├── pipes.c
-│   │   └── redirections.c
-│   ├── builtins/
-│   │   ├── cd.c
-│   │   └── echo.c
-│   └── utils/
-│       ├── error.c
-│       └── env.c
-├── include/
-│   └── minishell.h
-├── libft/
-│   └── [Librairie personnalisée]
-└── README.md
-```
-
 ### Principaux Modules
 - **Lexer** : Analyse la ligne de commande pour identifier les tokens.
 - **Parser** : Crée une structure compréhensible à partir des tokens (abstract syntax tree).
