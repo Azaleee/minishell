@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:32:15 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:23:36 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:10:41 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,20 @@ void	close_all_pipes(t_minishell *minishell)
 		close(minishell->pipes[i][0]);
 		close(minishell->pipes[i][1]);
 		i++;
+	}
+}
+
+void	close_unused_pipes(t_minishell *minishell, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j < minishell->nb_cmd - 1)
+	{
+		if (j != i - 1)
+			close(minishell->pipes[j][0]);
+		if (j != i)
+			close(minishell->pipes[j][1]);
+		j++;
 	}
 }

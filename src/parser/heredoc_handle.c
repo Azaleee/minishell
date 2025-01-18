@@ -6,27 +6,36 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:16:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:30:14 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 19:21:31 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	open_heredoc(void)
+int	open_heredoc(char *input_file)
 {
 	int		fd;
 
-	fd = open("/tmp/heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(input_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	return (fd);
 }
 
-void	read_heredoc(char *eof)
+char	*create_temp_file(int *heredoc_counter)
+{
+	char	*file;
+
+	file = ft_strjoin("/tmp/heredoc", ft_itoa(*heredoc_counter));
+	(*heredoc_counter)++;
+	return (file);
+}
+
+void	read_heredoc(char *eof, char *input_file)
 {
 	char	*line;
 	int		fd;
 
 	line = NULL;
-	fd = open_heredoc();
+	fd = open_heredoc(input_file);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);

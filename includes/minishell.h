@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:24:04 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 19:14:21 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_minishell
 	pid_t			*pid;
 	int				nb_cmd;
 	int				exit_code;
+	int				*heredoc_counter;
 }					t_minishell;
 
 /**************************
@@ -130,6 +131,7 @@ void	execute_builtin(t_cmds *current, t_minishell *minishell,
 void	init_pipes(t_minishell *minishell, int nb_cmd);
 void	free_pipes(t_minishell *minishell, int **tab);
 void	close_all_pipes(t_minishell *minishell);
+void	close_unused_pipes(t_minishell *minishell, int i);
 
 /**
  * Command Management
@@ -150,12 +152,13 @@ void	set_output_redir(t_cmds *current, t_minishell *minishell, int i);
 /**
  * Parser
  */
-int		open_heredoc(void);
-void	read_heredoc(char *eof);
-void	get_heredoc_redir(t_cmds *cmds, t_lexer **token);
+int		open_heredoc(char *input_file);
+void	read_heredoc(char *eof, char *input_file);
+void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter);
 void	get_input_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token);
+char	*create_temp_file(int *heredoc_counter);
 
 /**
  * Environment Variable Expansion
@@ -174,7 +177,7 @@ void	clean_word_token(t_minishell *minishell, char **env);
 /**
  * Command Structure Filling
  */
-void	fill_struct_cmds(t_cmds **cmds, t_lexer *token);
+void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter);
 
 /**
  * Utility Functions
