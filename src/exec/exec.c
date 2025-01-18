@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 22:42:13 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:35:29 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	count_cmd(t_cmds *cmds)
 {
 	int	i;
 
-	if (!cmds && cmds->args->arg == NULL)
+	if (!cmds || cmds->args->arg == NULL)
 		return (0);
 	i = 0;
 	while (cmds)
@@ -48,11 +48,12 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	char	**cmd;
 	int		builtin_id;
 
+	printf("Executing command %d\n", i);
 	if (current->error_file == -1)
 		exit(1);
 	set_input_redir(current, minishell, i);
 	set_output_redir(current, minishell, i);
-	close_all_pipes(minishell);
+	close_unused_pipes(minishell, i);
 	builtin_id = is_builtin(current->args->arg);
 	if (builtin_id)
 	{
@@ -82,7 +83,9 @@ void	execute_all(t_minishell *minishell)
 	{
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == 0)
+		{
 			execute_cmd(current_cmd, minishell, i);
+		}
 		i++;
 		current_cmd = current_cmd->next;
 	}
@@ -91,3 +94,37 @@ void	execute_all(t_minishell *minishell)
 	free_pipes(minishell, minishell->pipes);
 	free(minishell->pid);
 }
+
+// void	execute_all(t_minishell *minishell)
+// {
+// 	int		i;
+// 	t_cmds	*current_cmd;
+// 	t_cmds	*cmd_array[minishell->nb_cmd];
+
+// 	minishell->nb_cmd = count_cmd(minishell->cmds);
+// 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
+
+// 	Stocker les commandes dans un tableau pour un accès inverse
+// 	current_cmd = minishell->cmds;
+// 	for (i = 0; i < minishell->nb_cmd; i++)
+// 	{
+// 		cmd_array[i] = current_cmd;
+// 		current_cmd = current_cmd->next;
+// 	}
+
+// 	init_pipes(minishell, minishell->nb_cmd);
+// 	i = minishell->nb_cmd - 1; // Initialiser i à nb_cmd - 1
+// 	while (i >= 0)
+// 	{
+// 		minishell->pid[i] = fork();
+// 		if (minishell->pid[i] == 0)
+// 		{
+// 			execute_cmd(cmd_array[i], minishell, i);
+// 		}
+// 		i--; // Décrémenter i à chaque itération
+// 	}
+// 	close_all_pipes(minishell);
+// 	wait_child(minishell);
+// 	free_pipes(minishell, minishell->pipes);
+// 	free(minishell->pid);
+// }
