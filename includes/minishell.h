@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 19:14:21 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:43:04 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
 
 /**************************
  **     DEFINITIONS     **
@@ -112,6 +113,7 @@ typedef struct s_minishell
  * Built-in Functions
  */
 int		pwd(void);
+void	print_env(char **env);
 
 /**
  * Execution Handlers
@@ -202,7 +204,7 @@ void	free_tab(char **tab);
 void	free_all(t_minishell *minishell);
 int		syntax_checker(char *msg_error, char *arg, char *line,
 			int (*check)(char *));
-int		print_error(char *message, char **cmd, int exit_code,
+int		print_error(char *message, char *cmd, int exit_code,
 			t_minishell *minishell);
 int		check_all_syntax(char *line);
 int		syntax_token_good(t_lexer *token);

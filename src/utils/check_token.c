@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:27:16 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:21:27 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 23:36:34 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	printf_error_token(char *value)
 	ft_putstr_fd("syntax error near unexpected token '", 2);
 	ft_putstr_fd(value, 2);
 	ft_putstr_fd("'\n", 2);
+	g_error_code = 2;
 }
 	// ERROR CODE
 

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:34:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:15:28 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 23:31:34 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,16 @@ int	check_all_syntax(char *line)
 {
 	if (syntax_checker("Syntax error: quotation marks not closed\n", "",
 			line, &if_quote_close) == TRUE)
-		return (0);
+		return (2);
 	else if (syntax_checker("Syntax error: operator out of place\n", "",
 			line, &if_pipe_misplaced) == TRUE)
-		return (0);
+		return (2);
 	else if (syntax_checker("Syntax error: unsupported logic operator\n", "",
 			line, &if_logical_operator) == TRUE)
-		return (0);
+		return (2);
 	else if (syntax_checker("Syntax error: invalid redirection\n", "",
 			line, &if_wrong_redir) == TRUE)
-		return (0);
+		return (2);
 	else
-		return (1);
+		return (0);
 }

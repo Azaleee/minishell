@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 18:35:29 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 23:37:46 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	char	**cmd;
 	int		builtin_id;
 
-	printf("Executing command %d\n", i);
+	// printf("Executing command %d\n", i);
 	if (current->error_file == -1)
 		exit(1);
 	set_input_redir(current, minishell, i);
@@ -83,9 +83,9 @@ void	execute_all(t_minishell *minishell)
 	{
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == 0)
-		{
 			execute_cmd(current_cmd, minishell, i);
-		}
+		else if (minishell->pid[i] < 0)
+			perror("fork");
 		i++;
 		current_cmd = current_cmd->next;
 	}

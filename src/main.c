@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 19:21:50 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:43:41 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ void	shell_loop(t_minishell *minishell, char *line)
 {
 	if (*line != '\0')
 	{
-		if (check_all_syntax(line))
+		g_error_code = check_all_syntax(line);
+		if (g_error_code == 0)
 		{
 			tokenization(minishell, line);
+			// g_error_code = syntax_token_good(minishell->input);
 			if (syntax_token_good(minishell->input))
 			{
 				clean_word_token(minishell, minishell->env);
@@ -60,6 +62,7 @@ void	shell_loop(t_minishell *minishell, char *line)
 				execute_all(minishell);
 				cmds_clear(minishell);
 			}
+			// printf("error code: %d\n", g_error_code);
 			token_clear(minishell);
 		}
 	}
