@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 19:08:38 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 19:21:50 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	shell_loop(t_minishell *minishell, char *line)
 			if (syntax_token_good(minishell->input))
 			{
 				clean_word_token(minishell, minishell->env);
-				fill_struct_cmds(&minishell->cmds, minishell->input, minishell->heredoc_counter);
+				fill_struct_cmds(&minishell->cmds, minishell->input,
+					minishell->heredoc_counter);
 				execute_all(minishell);
 				cmds_clear(minishell);
 			}
