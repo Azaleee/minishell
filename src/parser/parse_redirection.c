@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:22:41 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 19:15:32 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int	check_file_redir(t_cmds *cmds, char *file, int mode)
 	return (fd);
 }
 
-void	get_heredoc_redir(t_cmds *cmds, t_lexer **token)
+void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
 {
 	if ((*token)->token_type == DLESS)
 	{
 		free(cmds->input_file);
-		cmds->input_file = ft_strdup("/tmp/heredoc.tmp");
-		read_heredoc((char *)(*token)->next->value);
+		cmds->input_file = create_temp_file(heredoc_counter);
+		read_heredoc((char *)(*token)->next->value, cmds->input_file);
 		(*token) = (*token)->next;
 	}
 }

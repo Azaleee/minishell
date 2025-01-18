@@ -6,21 +6,21 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:10:22 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:14:10 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/18 19:05:24 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	set_redirection(t_cmds *cmds, t_lexer **token)
+void	set_redirection(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
 {
-	get_heredoc_redir(cmds, token);
+	get_heredoc_redir(cmds, token, heredoc_counter);
 	get_input_redir(cmds, token);
 	get_output_redir(cmds, token);
 	get_output_append_redir(cmds, token);
 }
 
-void	fill_struct_cmds(t_cmds **cmds, t_lexer *token)
+void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter)
 {
 	t_cmds	*current_cmd;
 
@@ -35,7 +35,7 @@ void	fill_struct_cmds(t_cmds **cmds, t_lexer *token)
 		}
 		else if (token->token_type == LESS || token->token_type == GREAT
 			|| token->token_type == DGREAT || token->token_type == DLESS)
-			set_redirection(current_cmd, &token);
+			set_redirection(current_cmd, &token, heredoc_counter);
 		else if (token->token_type == WORD)
 			lst_add_back((void **)&current_cmd->args, init_arg(token->value),
 				get_next_args, set_next_args);
@@ -44,4 +44,5 @@ void	fill_struct_cmds(t_cmds **cmds, t_lexer *token)
 	if (current_cmd)
 		lst_add_back((void **)cmds, current_cmd,
 			get_next_cmd, set_next_cmd);
+	printf_all_cmd(*cmds);
 }
