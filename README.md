@@ -41,7 +41,7 @@ Minishell est un projet de l'école 42 visant à recréer un shell minimaliste e
 ### Instructions
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/votre-utilisateur/minishell.git
+   git clone https://github.com/Azaleee/minishell.git
    cd minishell
    ```
 2. Compilez le projet :
