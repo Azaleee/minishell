@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:16:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 19:21:31 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/19 20:50:11 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,23 @@ char	*create_temp_file(int *heredoc_counter)
 	char	*file;
 
 	file = ft_strjoin("/tmp/heredoc", ft_itoa(*heredoc_counter));
-	(*heredoc_counter)++;
 	return (file);
+}
+
+void	handle_sigint_heredoc(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	exit(130);
 }
 
 void	read_heredoc(char *eof, char *input_file)
 {
 	char	*line;
 	int		fd;
-
+	
+	signal(SIGINT, handle_sigint_heredoc);
+    signal(SIGQUIT, SIG_IGN);
 	line = NULL;
 	fd = open_heredoc(input_file);
 	while (1)
@@ -52,4 +60,5 @@ void	read_heredoc(char *eof, char *input_file)
 		free(line);
 	}
 	free(line);
+	close(fd);
 }

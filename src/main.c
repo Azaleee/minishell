@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 00:43:41 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/19 20:54:22 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	shell_loop(t_minishell *minishell, char *line)
 {
 	if (*line != '\0')
 	{
-		g_error_code = check_all_syntax(line);
-		if (g_error_code == 0)
+		if (check_all_syntax(line) == 0)
 		{
 			tokenization(minishell, line);
 			// g_error_code = syntax_token_good(minishell->input);
@@ -62,11 +61,20 @@ void	shell_loop(t_minishell *minishell, char *line)
 				execute_all(minishell);
 				cmds_clear(minishell);
 			}
-			// printf("error code: %d\n", g_error_code);
 			token_clear(minishell);
 		}
 	}
 	free(line);
+}
+
+void	sigint_handler(int sig)
+{
+	(void)sig;
+	g_error_code = 1;
+	write(STDERR_FILENO, "\n", 1);
+	rl_on_new_line();
+	// rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int	main(int ac, char **av, char **env)
@@ -79,6 +87,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	minishell = init_minishell(env);
+	signal(SIGINT, sigint_handler);
 	while (1)
 	{
 		pwd = pwd_print_readline();

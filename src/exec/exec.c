@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 23:37:46 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/19 21:00:42 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,14 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	perror("execve");
 }
 
+void	handle_sigint_cmd(int signal)
+{
+	(void)signal;
+	ft_putstr_fd("\n", STDERR_FILENO);
+	// rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 void	execute_all(t_minishell *minishell)
 {
 	int		i;
@@ -81,6 +89,7 @@ void	execute_all(t_minishell *minishell)
 	init_pipes(minishell, minishell->nb_cmd);
 	while (current_cmd)
 	{
+		signal(SIGINT, handle_sigint_cmd);
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == 0)
 			execute_cmd(current_cmd, minishell, i);

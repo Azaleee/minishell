@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:10:22 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 00:46:27 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/19 20:54:14 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter)
 	t_cmds	*current_cmd;
 
 	current_cmd = init_cmd();
-	while (token)
+	while (token && g_error_code != 130)
 	{
 		if (token->token_type == PIPE)
 		{
