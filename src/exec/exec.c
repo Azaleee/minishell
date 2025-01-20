@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 14:07:51 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/20 15:39:26 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	builtin_id = is_builtin(current->args->arg);
 	if (builtin_id)
 	{
-		if (builtin_id == 3)
-			exit(0);
 		execute_builtin(current, minishell, builtin_id);
 		free(minishell->pid);
 		free_pipes(minishell, minishell->pipes);
@@ -92,6 +90,11 @@ void	execute_all(t_minishell *minishell)
 	if (minishell->nb_cmd == 1 && builtin_id == 3)
 	{
 		cd(minishell->cmds->args, &minishell->env);
+		return;
+	}
+	else if (minishell->nb_cmd == 1 && builtin_id == 4)
+	{
+		ft_export(minishell->cmds->args, &minishell->env);
 		return;
 	}
 	//TODO DEBUG

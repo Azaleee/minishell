@@ -35,7 +35,7 @@ EXEC_DIR =			exec/
 EXEC_FILES =		exec.c cmd_manager.c pipes_manager.c set_redirection.c
 
 BUILTIN_DIR =		exec/builtins/
-BUILTIN_FILES = 	pwd.c builtins_handler.c env.c cd.c
+BUILTIN_FILES = 	pwd.c builtins_handler.c env.c cd.c export.c
 
 SRC_FILES = main.c \
 			$(addprefix $(LEXER_DIR), $(LEXER_FILES)) \
