@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:05:59 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 10:53:17 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/20 11:11:14 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,37 @@ char	*get_env_value(char *env_var, char **env)
 	return (NULL);
 }
 
+char	**add_env_value(char *env_var, char *env_value, char **env)
+{
+	int		i;
+	char	**new_env;
+	char	*new_entry;
+	char	*temp;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 2));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = env[i];
+		i++;
+	}
+	temp = ft_strjoin(env_var, "=");
+	new_entry = ft_strjoin(temp, env_value);
+	free(temp);
+	new_env[i] = new_entry;
+	new_env[i + 1] = NULL;
+	return (new_env);
+}
+
 int	set_env_value(char *env_var, char *env_value, char **env)
 {
 	int		i;
+	char	**new_env;
 
 	i = 0;
 	while (env[i])
@@ -47,7 +75,12 @@ int	set_env_value(char *env_var, char *env_value, char **env)
 		}
 		i++;
 	}
-	return (FALSE);
+	new_env = add_env_value(env_var, env_value, env);
+	if (!new_env)
+		return (FALSE);
+	free(env);
+	env = new_env;
+	return (TRUE);
 }
 
 char	**env_cpy(char **env)
