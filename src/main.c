@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 20:54:22 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/20 14:50:46 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,17 @@ t_minishell	*init_minishell(char **env)
 	return (minishell);
 }
 
-char	*pwd_print_readline(void)
+char	*pwd_print_readline(char **env)
 {
 	char	*pwd;
 
-	pwd = malloc(ft_strlen("\e[1;32m➜\e[0m \e[1;36m") + ft_strlen(getenv("PWD"))
+	pwd = malloc(ft_strlen("\e[1;32m➜\e[0m \e[1;36m") \
+	+ ft_strlen(get_env_value("PWD", env))
 			+ ft_strlen("$ \e[0m") + 1);
 	ft_strlcpy(pwd, "\e[1;32m➜\e[0m \e[1;36m",
 		ft_strlen("\e[1;32m➜ \e[0m\e[1;36m") + 1);
-	ft_strlcat(pwd, getenv("PWD"), ft_strlen(pwd) + ft_strlen(getenv("PWD"))
+	ft_strlcat(pwd, get_env_value("PWD", env), ft_strlen(pwd) \
+	+ ft_strlen(get_env_value("PWD", env))
 		+ 1);
 	ft_strlcat(pwd, "$ \e[0m", ft_strlen(pwd) + ft_strlen("$ \e[0m") + 1);
 	return (pwd);
@@ -90,7 +92,7 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, sigint_handler);
 	while (1)
 	{
-		pwd = pwd_print_readline();
+		pwd = pwd_print_readline(minishell->env);
 		line = readline(pwd);
 		if (!line)
 		{
