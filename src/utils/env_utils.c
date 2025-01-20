@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:05:59 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 11:11:14 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/20 13:33:49 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,29 +58,33 @@ char	**add_env_value(char *env_var, char *env_value, char **env)
 	return (new_env);
 }
 
-int	set_env_value(char *env_var, char *env_value, char **env)
+char	**set_env_value(char *env_var, char *env_value, char ***env)
 {
 	int		i;
 	char	**new_env;
+	char	*temp;
+	char	*new_entry;
 
 	i = 0;
-	while (env[i])
+	while ((*env)[i])
 	{
-		if (ft_strncmp(env[i], env_var, ft_strlen(env_var)) == 0
-			&& env[i][ft_strlen(env_var)] == '=')
+		if (ft_strncmp((*env)[i], env_var, ft_strlen(env_var)) == 0
+			&& (*env)[i][ft_strlen(env_var)] == '=')
 		{
-			free(env[i]);
-			env[i] = ft_strjoin(env_var, env_value);
-			return (TRUE);
+			free((*env)[i]);
+			temp = ft_strjoin(env_var, "=");
+			new_entry = ft_strjoin(temp, env_value);
+			free(temp);
+			(*env)[i] = new_entry;
+			return (*env);
 		}
 		i++;
 	}
-	new_env = add_env_value(env_var, env_value, env);
+	new_env = add_env_value(env_var, env_value, *env);
 	if (!new_env)
-		return (FALSE);
-	free(env);
-	env = new_env;
-	return (TRUE);
+		return (NULL);
+	free(*env);
+	return (*env = new_env, *env);
 }
 
 char	**env_cpy(char **env)

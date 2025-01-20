@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 21:00:42 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/20 14:07:51 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	char	**cmd;
 	int		builtin_id;
 
-	// printf("Executing command %d\n", i);
 	if (current->error_file == -1)
 		exit(1);
 	set_input_redir(current, minishell, i);
@@ -57,6 +56,8 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	builtin_id = is_builtin(current->args->arg);
 	if (builtin_id)
 	{
+		if (builtin_id == 3)
+			exit(0);
 		execute_builtin(current, minishell, builtin_id);
 		free(minishell->pid);
 		free_pipes(minishell, minishell->pipes);
@@ -81,9 +82,20 @@ void	execute_all(t_minishell *minishell)
 {
 	int		i;
 	t_cmds	*current_cmd;
+	int		builtin_id;
 
 	i = 0;
 	minishell->nb_cmd = count_cmd(minishell->cmds);
+
+	//TODO DEBUG
+	builtin_id = is_builtin(minishell->cmds->args->arg);
+	if (minishell->nb_cmd == 1 && builtin_id == 3)
+	{
+		cd(minishell->cmds->args, &minishell->env);
+		return;
+	}
+	//TODO DEBUG
+
 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
 	current_cmd = minishell->cmds;
 	init_pipes(minishell, minishell->nb_cmd);
