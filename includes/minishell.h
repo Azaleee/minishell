@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 18:26:10 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/20 10:53:41 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ t_lexer	*new_token(char *content, t_tok_t token);
 void	args_clear(t_args **args);
 void	cmds_clear(t_minishell *minishell);
 void	token_clear(t_minishell *minishell);
+int		set_env_value(char *env_var, char *env_value, char **env);
 char	*get_env_value(char *env_var, char **env);
 char	**env_cpy(char **env);
 void	free_tab(char **tab);
