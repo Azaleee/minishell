@@ -34,6 +34,8 @@ char	*pwd_print_readline(char **env)
 {
 	char	*pwd;
 
+	if (!get_env_value("PWD", env))
+		return (strdup("\e[1;32m➜\e[0m \e[1;36m$ \e[0m"));
 	pwd = malloc(ft_strlen("\e[1;32m➜\e[0m \e[1;36m") \
 	+ ft_strlen(get_env_value("PWD", env))
 			+ ft_strlen("$ \e[0m") + 1);
