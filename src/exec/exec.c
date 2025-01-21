@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 15:39:26 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/21 16:02:25 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,11 @@ void	execute_all(t_minishell *minishell)
 	else if (minishell->nb_cmd == 1 && builtin_id == 4)
 	{
 		ft_export(minishell->cmds->args, &minishell->env);
+		return;
+	}
+		else if (minishell->nb_cmd == 1 && builtin_id == 5)
+	{
+		unset(minishell->cmds->args, &minishell->env);
 		return;
 	}
 	//TODO DEBUG
