@@ -116,7 +116,15 @@ typedef struct s_minishell
 int		pwd(void);
 void	print_env(char **env);
 int		cd(t_args *args, char ***env);
+
+// ------ Export ------
 int		ft_export(t_args *args, char ***env);
+
+int		is_valid_identifier(char *str);
+void	print_export_error(char *arg);
+void	sort_env(char **env);
+void	print_sorted_env(char **env);
+// ------ end export ------
 
 /**
  * Execution Handlers
