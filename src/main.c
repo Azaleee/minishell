@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/	 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 14:50:46 by edetoh           ###   ########.fr       */
+/*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
+/*   Updated: 2025/01/21 16:31:58 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*pwd_print_readline(char **env)
 {
 	char	*pwd;
 
+	if (!get_env_value("PWD", env))
+		return (strdup("\e[1;32m➜\e[0m \e[1;36m$ \e[0m"));
 	pwd = malloc(ft_strlen("\e[1;32m➜\e[0m \e[1;36m") \
 	+ ft_strlen(get_env_value("PWD", env))
 			+ ft_strlen("$ \e[0m") + 1);
