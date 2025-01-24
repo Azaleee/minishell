@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/23 16:24:04 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:41:34 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	execute_all(t_minishell *minishell)
 	minishell->pid = NULL;
 	//TODO DEBUG
 	builtin_id = is_builtin(minishell->cmds->args->arg);
-	if (minishell->nb_cmd == 1 && builtin_id > 2)
+	if (minishell->nb_cmd == 1 && builtin_id > 2 && builtin_id < 7)
 	{
 		if (builtin_id == 3)
 			cd(minishell->cmds->args, &minishell->env);
