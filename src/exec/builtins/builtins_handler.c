@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:12:49 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/23 16:15:29 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:42:01 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	is_builtin(char *cmd)
 		return (5);
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (6);
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (7);
 	return (0);
 }
 
@@ -44,4 +46,6 @@ void	execute_builtin(t_cmds *cmd, t_minishell *minishell, int builtin_id)
 		unset(minishell->cmds->args, &minishell->env);
 	if (builtin_id == 6)
 		ft_exit(minishell, minishell->nb_cmd);
+	if (builtin_id == 7)
+		echo(minishell->cmds->args, minishell->env);
 }

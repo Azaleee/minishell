@@ -118,6 +118,7 @@ void	print_env(char **env);
 int		cd(t_args *args, char ***env);
 void	unset(t_args *args, char ***env);
 int		ft_exit(t_minishell *minishell, int nb_commands);
+void	echo(t_args *args, char **env);
 
 // ------ Export ------
 int		ft_export(t_args *args, char ***env);
