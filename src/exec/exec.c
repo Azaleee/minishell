@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/21 16:02:25 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/23 16:24:04 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@ void	wait_child(t_minishell *minishell)
 	while (i < minishell->nb_cmd)
 	{
 		if (minishell->pid[i] > 0)
+		{
 			waitpid(minishell->pid[i], &status, 0);
-		if (WIFEXITED(status))
-			g_error_code = WEXITSTATUS(status);
+			if (WIFEXITED(status))
+				g_error_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_error_code = 128 + WTERMSIG(status);
+		}
 		i++;
 	}
+	minishell->exit_code = g_error_code;
 }
 
 void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
@@ -57,8 +62,6 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	if (builtin_id)
 	{
 		execute_builtin(current, minishell, builtin_id);
-		free(minishell->pid);
-		free_pipes(minishell, minishell->pipes);
 		free_all(minishell);
 		exit(0);
 	}
@@ -66,6 +69,11 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	parse_and_check_cmd(minishell, current, cmd);
 	execve(current->path_cmd, cmd, minishell->env);
 	perror("execve");
+	if (errno == ENOENT)
+		exit(127);
+	else if (errno == EACCES)
+		exit(126);
+	exit(1);
 }
 
 void	handle_sigint_cmd(int signal)
@@ -84,26 +92,22 @@ void	execute_all(t_minishell *minishell)
 
 	i = 0;
 	minishell->nb_cmd = count_cmd(minishell->cmds);
-
+	minishell->pid = NULL;
 	//TODO DEBUG
 	builtin_id = is_builtin(minishell->cmds->args->arg);
-	if (minishell->nb_cmd == 1 && builtin_id == 3)
+	if (minishell->nb_cmd == 1 && builtin_id > 2)
 	{
-		cd(minishell->cmds->args, &minishell->env);
-		return;
-	}
-	else if (minishell->nb_cmd == 1 && builtin_id == 4)
-	{
-		ft_export(minishell->cmds->args, &minishell->env);
-		return;
-	}
-		else if (minishell->nb_cmd == 1 && builtin_id == 5)
-	{
-		unset(minishell->cmds->args, &minishell->env);
-		return;
+		if (builtin_id == 3)
+			cd(minishell->cmds->args, &minishell->env);
+		else if (builtin_id == 4)
+			ft_export(minishell->cmds->args, &minishell->env);
+		else if (builtin_id == 5)
+			unset(minishell->cmds->args, &minishell->env);
+		else if (builtin_id == 6)
+			ft_exit(minishell, minishell->nb_cmd);
+		return ;
 	}
 	//TODO DEBUG
-
 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
 	current_cmd = minishell->cmds;
 	init_pipes(minishell, minishell->nb_cmd);
