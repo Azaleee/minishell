@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 20:53:32 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/27 20:37:24 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,6 @@ int	check_file_redir(t_cmds *cmds, char *file, int mode)
 		perror(file);
 	return (fd);
 }
-
-// void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
-// {
-// 	pid_t	pid;
-// 	int		status;
-
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		if ((*token)->token_type == DLESS)
-// 		{
-// 			free(cmds->input_file);
-// 			cmds->input_file = create_temp_file(heredoc_counter);
-// 			read_heredoc((char *)(*token)->next->value, cmds->input_file);
-// 			exit(0);
-// 		}
-// 	}
-// 	(*token) = (*token)->next;
-// 	waitpid(pid, &status, 0);
-// 	if (WIFEXITED(status))
-// 		g_error_code = WEXITSTATUS(status);
-// }
 
 void	handle_heredoc_child(int pipe_fd[2], t_lexer **token, int *heredoc_counter)
 {
@@ -139,10 +117,13 @@ void	get_input_redir(t_cmds *cmds, t_lexer **token)
 
 void	get_output_redir(t_cmds *cmds, t_lexer **token)
 {
+	int	fd;
+
+	fd = 0;
 	if ((*token)->token_type == GREAT)
 	{
-		if (check_file_redir(cmds, (*token)->next->value, 1) != -1
-			&& cmds->error_file != -1)
+		fd = check_file_redir(cmds, (*token)->next->value, 1);
+		if (fd != -1 && cmds->error_file != -1)
 		{
 			if (cmds->output_file)
 				free(cmds->output_file);
@@ -157,6 +138,7 @@ void	get_output_redir(t_cmds *cmds, t_lexer **token)
 			cmds->error_file = -1;
 			(*token) = (*token)->next;
 		}
+		close(fd);
 	}
 }
 

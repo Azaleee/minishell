@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/21 16:31:58 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/27 20:56:58 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ t_minishell	*init_minishell(char **env)
 	minishell->nb_cmd = 0;
 	minishell->exit_code = 0;
 	minishell->heredoc_counter = malloc(sizeof(int));
+	minishell->nb_cmd = 0;
+	minishell->pipes = NULL;
+	minishell->pid = NULL;
+	minishell->pwd = NULL;
 	if (!minishell)
 		exit(EXIT_FAILURE);
 	return (minishell);
@@ -62,7 +66,8 @@ void	shell_loop(t_minishell *minishell, char *line)
 				clean_word_token(minishell, minishell->env);
 				fill_struct_cmds(&minishell->cmds, minishell->input,
 					minishell->heredoc_counter);
-				execute_all(minishell);
+				if (minishell->cmds->args)
+					execute_all(minishell);
 				cmds_clear(minishell);
 			}
 			token_clear(minishell);
@@ -71,31 +76,20 @@ void	shell_loop(t_minishell *minishell, char *line)
 	free(line);
 }
 
-void	sigint_handler(int sig)
-{
-	(void)sig;
-	g_error_code = 1;
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	// rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 int	main(int ac, char **av, char **env)
 {
 	char		*line;
 	t_minishell	*minishell;
-	char		*pwd;
 
 	line = NULL;
 	(void)ac;
 	(void)av;
 	minishell = init_minishell(env);
-	signal(SIGINT, sigint_handler);
+	setup_sigaction();
 	while (1)
 	{
-		pwd = pwd_print_readline(minishell->env);
-		line = readline(pwd);
+		minishell->pwd = pwd_print_readline(minishell->env);
+		line = readline(minishell->pwd);
 		if (!line)
 		{
 			write(1, "exit\n", 5);
@@ -103,11 +97,9 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(line);
 		shell_loop(minishell, line);
-		free(pwd);
+		free(minishell->pwd);
 	}
 	free(line);
-	if (pwd)
-		free(pwd);
 	free_all(minishell);
 }
 // valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl.txt

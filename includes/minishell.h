@@ -26,6 +26,8 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <signal.h>
+# include <bits/sigaction.h>
+# include <asm-generic/signal-defs.h>
 
 /**************************
  **     DEFINITIONS     **
@@ -104,11 +106,17 @@ typedef struct s_minishell
 	int				nb_cmd;
 	int				exit_code;
 	int				*heredoc_counter;
+	char			*pwd;
 }					t_minishell;
 
 /**************************
  **    FUNCTION PROTOS  **
  **************************/
+
+/**
+ * Signal Handler
+ */
+void 	setup_sigaction(void);
 
 /**
  * Built-in Functions
@@ -137,9 +145,11 @@ void	execute_all(t_minishell *minishell);
 /**
  * Built-ins Manager
  */
-int		is_builtin(char *cmd);
-void	execute_builtin(t_cmds *current, t_minishell *minishell,
-			int builtin_id);
+int		is_builtin_parent(char *cmd);
+int		is_builtin_child(char *cmd);
+void	execute_builtin_child(t_cmds *cmd, t_minishell *minishell, int builtin_id);
+int		execute_builtin_parent(t_cmds *cmd, t_minishell *minishell);
+
 
 /**
  * Pipes Management
@@ -217,6 +227,7 @@ char	*get_env_value(char *env_var, char **env);
 char	**env_cpy(char **env);
 void	free_tab(char **tab);
 void	free_all(t_minishell *minishell);
+void	exit_and_free(t_minishell *minishell, int exit_code);
 int		syntax_checker(char *msg_error, char *arg, char *line,
 			int (*check)(char *));
 int		print_error(char *message, char *cmd, int exit_code,
