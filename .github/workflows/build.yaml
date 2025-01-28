@@ -33,7 +33,7 @@ jobs:
     # Compilation du projet
     - name: Build project
       run: |
-        cd philo && make
+        make
         make clean
 
     # Clonage du tester
