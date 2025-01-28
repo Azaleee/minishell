@@ -2,10 +2,15 @@ name: 42 Build Check
 
 on:
   push:
-    branches: [ "github/action" ]
-  pull_request:
-    branches: [ "github/action" ]
-
+    branches:
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+    pull_request:
+    branches:
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
 jobs:
   build:
     runs-on: ubuntu-latest
