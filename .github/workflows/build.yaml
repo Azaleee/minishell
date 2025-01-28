@@ -1,4 +1,4 @@
-name: 42 Build Check
+name: Minishell tester (Norme & Minishell tester)
 
 on:
   push:
@@ -35,7 +35,6 @@ jobs:
 
     # Vérification de la norme
     - name: Check norm
-      continue-on-error: true
       run: |
         norminette
 
