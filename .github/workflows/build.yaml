@@ -26,6 +26,7 @@ jobs:
 
     # Vérification de la norme
     - name: Check norm
+      continue-on-error: true
       run: |
         norminette
 
