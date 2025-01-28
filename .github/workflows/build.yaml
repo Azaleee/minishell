@@ -13,6 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+      # Installation de libreadline-dev
+    - name: Install dependencies
+      run: sudo apt-get install -y libreadline-dev
+
     # Installation de norminette
     - name: Set up Python
       uses: actions/setup-python@v3
