@@ -27,7 +27,7 @@ jobs:
     # Vérification de la norme
     - name: Check norm
       run: |
-        norminette philo/
+        norminette
 
     # Compilation du projet
     - name: Build project
@@ -43,5 +43,6 @@ jobs:
     # Exécution du tester
     - name: Run tester
       run: |
+        make
         cd minishell_tester
         ./tester
