@@ -2,9 +2,9 @@ name: 42 Build Check
 
 on:
   push:
-    branches: [ "*" ]
+    branches: [ "github/action" ]
   pull_request:
-    branches: [ "*" ]
+    branches: [ "github/action" ]
 
 jobs:
   build:
