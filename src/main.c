@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/27 20:56:58 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:39:31 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_minishell	*init_minishell(char **env)
 	minishell->nb_cmd = 0;
 	minishell->exit_code = 0;
 	minishell->heredoc_counter = malloc(sizeof(int));
+	*minishell->heredoc_counter = 0;
 	minishell->nb_cmd = 0;
 	minishell->pipes = NULL;
 	minishell->pid = NULL;
@@ -64,7 +65,8 @@ void	shell_loop(t_minishell *minishell, char *line)
 			if (syntax_token_good(minishell->input))
 			{
 				clean_word_token(minishell, minishell->env);
-				fill_struct_cmds(&minishell->cmds, minishell->input,
+				display_tokens(minishell->input);
+				fill_struct_cmds(minishell, &minishell->cmds, minishell->input,
 					minishell->heredoc_counter);
 				if (minishell->cmds->args)
 					execute_all(minishell);
@@ -85,7 +87,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	minishell = init_minishell(env);
-	setup_sigaction();
+	init_signals();
 	while (1)
 	{
 		minishell->pwd = pwd_print_readline(minishell->env);
@@ -97,6 +99,7 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(line);
 		shell_loop(minishell, line);
+		printf("g_error_code = %d\n", g_error_code);
 		free(minishell->pwd);
 	}
 	free(line);

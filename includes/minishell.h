@@ -116,7 +116,10 @@ typedef struct s_minishell
 /**
  * Signal Handler
  */
-void 	setup_sigaction(void);
+void	init_signals(void);
+void	handle_sigquit(int signal);
+void	handle_sigint_cmd(int signal);
+void	handle_sigint_heredoc(int sig);
 
 /**
  * Built-in Functions
@@ -180,7 +183,7 @@ void	set_output_redir(t_cmds *current, t_minishell *minishell, int i);
  */
 int		open_heredoc(char *input_file);
 void	read_heredoc(char *eof, char *input_file);
-void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter);
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token, int *heredoc_counter);
 void	get_input_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token);
@@ -203,7 +206,7 @@ void	clean_word_token(t_minishell *minishell, char **env);
 /**
  * Command Structure Filling
  */
-void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter);
+void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token, int *heredoc_counter);
 
 /**
  * Utility Functions

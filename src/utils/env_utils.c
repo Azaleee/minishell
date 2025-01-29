@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:05:59 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 13:33:49 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/29 15:17:24 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*get_env_value(char *env_var, char **env)
 	int		i;
 
 	i = 0;
+	printf("g_error_code env_value = %d\n", g_error_code);
 	if (strncmp(env_var, "?", 1) == 0)
 		return (ft_itoa(g_error_code));
 	while (env[i])

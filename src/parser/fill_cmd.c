@@ -6,26 +6,26 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:10:22 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/27 20:26:44 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:23:52 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	set_redirection(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
+void	set_redirection(t_minishell *minishell, t_cmds *cmds, t_lexer **token, int *heredoc_counter)
 {
-	get_heredoc_redir(cmds, token, heredoc_counter);
+	get_heredoc_redir(minishell, cmds, token, heredoc_counter);
 	get_input_redir(cmds, token);
 	get_output_redir(cmds, token);
 	get_output_append_redir(cmds, token);
 }
 
-void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter)
+void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token, int *heredoc_counter)
 {
 	t_cmds	*current_cmd;
 
 	current_cmd = init_cmd();
-	while (token && g_error_code != 130)
+	while (token)
 	{
 		if (token->token_type == PIPE)
 		{
@@ -35,7 +35,7 @@ void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter)
 		}
 		else if (token->token_type == LESS || token->token_type == GREAT
 			|| token->token_type == DGREAT || token->token_type == DLESS)
-			set_redirection(current_cmd, &token, heredoc_counter);
+			set_redirection(minishell, current_cmd, &token, heredoc_counter);
 		else if (token->token_type == WORD)
 			lst_add_back((void **)&current_cmd->args, init_arg(token->value),
 				get_next_args, set_next_args);

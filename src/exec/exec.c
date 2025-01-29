@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/27 20:58:57 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:10:30 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	wait_child(t_minishell *minishell)
 		}
 		i++;
 	}
-	minishell->exit_code = g_error_code;
 }
 
 void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
@@ -84,26 +83,25 @@ void	execute_all(t_minishell *minishell)
 	i = 0;
 	minishell->nb_cmd = count_cmd(minishell->cmds);
 	minishell->pid = NULL;
-	//TODO DEBUG
 	if (minishell->nb_cmd == 1 && execute_builtin_parent(minishell->cmds, minishell))
 		return ;
-	//TODO DEBUG
 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
 	init_pipes(minishell, minishell->nb_cmd);
 	while (current_cmd)
 	{
-		setup_sigaction();
+		signal(SIGQUIT, handle_sigquit);
+		signal(SIGINT, handle_sigint_cmd);
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == 0)
 			execute_cmd(current_cmd, minishell, i);
 		i++;
 		current_cmd = current_cmd->next;
 	}
-	
 	close_all_pipes(minishell);
 	wait_child(minishell);
+	init_signals();
 	free(minishell->pid);
-	printf("free pid\n");
+	minishell->pid = NULL;
 }
 
 // void	execute_all(t_minishell *minishell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 10:44:56 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/29 15:43:22 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*expand_env_var(char *value, char **env, size_t i)
 			}
 			env_value = get_env_value(env_var, env);
 			value = replace_actual(value, env_value, env_var, start);
+			free(env_value);
 			i = start + ft_strlen(env_value);
 		}
 		else
