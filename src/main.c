@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 15:39:31 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:22:27 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,28 @@ t_minishell	*init_minishell(char **env)
 char	*pwd_print_readline(char **env)
 {
 	char	*pwd;
+	char	*temp;
 
-	if (!get_env_value("PWD", env))
-		return (strdup("\e[1;32m➜\e[0m \e[1;36m$ \e[0m"));
+	temp = get_env_value("PWD", env);
+	if (!temp)
+	{
+		free(temp);
+		return (ft_strdup("\e[1;32m➜\e[0m \e[1;36m$ \e[0m"));
+	}
+	free(temp);
+	temp = get_env_value("PWD", env);
 	pwd = malloc(ft_strlen("\e[1;32m➜\e[0m \e[1;36m") \
-	+ ft_strlen(get_env_value("PWD", env))
+	+ ft_strlen(temp)
 			+ ft_strlen("$ \e[0m") + 1);
 	ft_strlcpy(pwd, "\e[1;32m➜\e[0m \e[1;36m",
 		ft_strlen("\e[1;32m➜ \e[0m\e[1;36m") + 1);
-	ft_strlcat(pwd, get_env_value("PWD", env), ft_strlen(pwd) \
-	+ ft_strlen(get_env_value("PWD", env))
+	free(temp);
+	temp = get_env_value("PWD", env);
+	ft_strlcat(pwd, temp, ft_strlen(pwd) \
+	+ ft_strlen(temp)
 		+ 1);
 	ft_strlcat(pwd, "$ \e[0m", ft_strlen(pwd) + ft_strlen("$ \e[0m") + 1);
-	return (pwd);
+	return (free(temp), pwd);
 }
 
 // printf_all_cmd(minishell->cmds);
@@ -66,11 +75,10 @@ void	shell_loop(t_minishell *minishell, char *line)
 			{
 				clean_word_token(minishell, minishell->env);
 				display_tokens(minishell->input);
-				fill_struct_cmds(minishell, &minishell->cmds, minishell->input,
-					minishell->heredoc_counter);
+				fill_struct_cmds(minishell, &minishell->cmds, minishell->input);
 				if (minishell->cmds->args)
 					execute_all(minishell);
-				cmds_clear(minishell);
+				cmds_clear(&minishell->cmds);
 			}
 			token_clear(minishell);
 		}

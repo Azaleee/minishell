@@ -183,7 +183,7 @@ void	set_output_redir(t_cmds *current, t_minishell *minishell, int i);
  */
 int		open_heredoc(char *input_file);
 void	read_heredoc(char *eof, char *input_file);
-void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token, int *heredoc_counter);
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token);
 void	get_input_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token);
@@ -206,7 +206,7 @@ void	clean_word_token(t_minishell *minishell, char **env);
 /**
  * Command Structure Filling
  */
-void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token, int *heredoc_counter);
+void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token);
 
 /**
  * Utility Functions
@@ -223,7 +223,7 @@ t_cmds	*init_cmd(void);
 t_args	*init_arg(char *value);
 t_lexer	*new_token(char *content, t_tok_t token);
 void	args_clear(t_args **args);
-void	cmds_clear(t_minishell *minishell);
+void	cmds_clear(t_cmds **cmds);
 void	token_clear(t_minishell *minishell);
 char	**set_env_value(char *env_var, char *env_value, char ***env);
 char	*get_env_value(char *env_var, char **env);

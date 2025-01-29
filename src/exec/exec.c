@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 15:10:30 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:52:16 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	execute_all(t_minishell *minishell)
 	close_all_pipes(minishell);
 	wait_child(minishell);
 	init_signals();
+	free_pipes(minishell, minishell->pipes);
+	minishell->pipes = NULL;
 	free(minishell->pid);
 	minishell->pid = NULL;
 }

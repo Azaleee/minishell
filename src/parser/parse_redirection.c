@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 15:41:08 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:26:16 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_file_redir(t_cmds *cmds, char *file, int mode)
 	return (fd);
 }
 
-void	handle_heredoc_child(t_minishell *minishell, int pipe_fd[2], t_lexer **token, int *heredoc_counter)
+void	handle_heredoc_child(t_cmds *cmds, t_minishell *minishell, int pipe_fd[2], t_lexer **token, int *heredoc_counter)
 {
 	char    *temp_file;
 
@@ -42,6 +42,7 @@ void	handle_heredoc_child(t_minishell *minishell, int pipe_fd[2], t_lexer **toke
 	read_heredoc((char *)(*token)->next->value, temp_file);
 	write(pipe_fd[1], temp_file, strlen(temp_file) + 1);
 	free(temp_file);
+	cmds_clear(&cmds);
 	free_all(minishell);
 	close(pipe_fd[1]);
 	exit(0);
@@ -67,7 +68,7 @@ void	handle_heredoc_parent(int pipe_fd[2], t_cmds *cmds, t_lexer **token, pid_t 
 	*token = (*token)->next;
 }
 
-void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token, int *heredoc_counter)
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
@@ -86,10 +87,10 @@ void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token, in
 			exit(1);
 		}
 		if (pid == 0)
-			handle_heredoc_child(minishell, pipe_fd, token, heredoc_counter);
+			handle_heredoc_child(cmds, minishell, pipe_fd, token, minishell->heredoc_counter);
 		else
 			handle_heredoc_parent(pipe_fd, cmds, token, pid);
-		(*heredoc_counter)++;
+		(*minishell->heredoc_counter)++;
 	}
 }
 

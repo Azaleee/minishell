@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 15:57:59 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:27:14 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char	*expand_env_var(char *value, char **env, size_t i)
 		{
 			start = i;
 			env_var = get_env_var(value, &i);
-			printf("env_var = %s\n", env_var);
 			if (!env_var)
 			{
 				i++;
@@ -58,10 +57,10 @@ char	*expand_env_var(char *value, char **env, size_t i)
 			}
 			env_value = get_env_value(env_var, env);
 			printf("env_value = %s\n", env_value);
-			printf("value avant = %s\n", value);
 			value = replace_actual(value, env_value, env_var, start);
-			printf("value = %s\n", value);
 			i = start + ft_strlen(env_value);
+			if (env_value)
+				free(env_value);
 		}
 		else
 			i++;

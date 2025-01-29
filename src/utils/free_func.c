@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:47:24 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 15:06:13 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:15:56 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	free_all(t_minishell *minishell)
 		free(minishell->pwd);
 	if (minishell->input)
 		token_clear(minishell);
-	if (minishell->cmds)
-		cmds_clear(minishell);
+	fprintf(stderr, "free_cmd\n");
+	cmds_clear(&minishell->cmds);
 	if (minishell->env)
 		free_tab(minishell->env);
 	if (minishell->pid)
