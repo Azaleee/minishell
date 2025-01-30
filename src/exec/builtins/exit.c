@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:53:48 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/30 11:23:36 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/30 12:59:17 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_exit(t_minishell *minishell, int nb_commands)
 {
 	minishell->cmds->args = minishell->cmds->args->next;
 	if (minishell->cmds->args && minishell->cmds->args->next)
-		print_error("too many arguments", NULL, 1, minishell);
+		print_error(" too many arguments", NULL, 1, minishell);
 	if (minishell->cmds->args)
 		exit_args(minishell->cmds->args, minishell);
 	if (nb_commands > 1)
@@ -59,6 +59,7 @@ int	ft_exit(t_minishell *minishell, int nb_commands)
 		print_error(NULL, NULL, g_error_code, minishell);
 		return (TRUE);
 	}
-	print_error("exit", NULL, g_error_code, minishell);
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	print_error(NULL, NULL, g_error_code, minishell);
 	return (TRUE);
 }
