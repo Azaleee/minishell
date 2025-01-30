@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:10:22 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 17:23:52 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/30 11:41:23 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token)
 	if (current_cmd)
 		lst_add_back((void **)cmds, current_cmd,
 			get_next_cmd, set_next_cmd);
-	printf_all_cmd(*cmds);
+	// printf_all_cmd(*cmds); // Debug
 }
