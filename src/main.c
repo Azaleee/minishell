@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 17:22:27 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/30 11:36:58 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	shell_loop(t_minishell *minishell, char *line)
 			if (syntax_token_good(minishell->input))
 			{
 				clean_word_token(minishell, minishell->env);
-				display_tokens(minishell->input);
+				// display_tokens(minishell->input); // debug
 				fill_struct_cmds(minishell, &minishell->cmds, minishell->input);
 				if (minishell->cmds->args)
 					execute_all(minishell);
@@ -107,7 +107,7 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(line);
 		shell_loop(minishell, line);
-		printf("g_error_code = %d\n", g_error_code);
+		// printf("g_error_code = %d\n", g_error_code); // debug
 		free(minishell->pwd);
 	}
 	free(line);
