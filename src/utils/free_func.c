@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:47:24 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/23 16:25:15 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/29 17:15:56 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,27 @@ void	free_tab(char **tab)
 	}
 }
 
+void	exit_and_free(t_minishell *minishell, int exit_code)
+{
+	free_all(minishell);
+	exit(exit_code);
+}
+
 void	free_all(t_minishell *minishell)
 {
 	if (!minishell)
 		return ;
+	if (minishell->pwd)
+		free(minishell->pwd);
 	if (minishell->input)
 		token_clear(minishell);
-	if (minishell->cmds)
-		cmds_clear(minishell);
+	fprintf(stderr, "free_cmd\n");
+	cmds_clear(&minishell->cmds);
 	if (minishell->env)
 		free_tab(minishell->env);
 	if (minishell->pid)
-	{
 		free(minishell->pid);
-		minishell->pid = NULL;
-	}
-	if (minishell->pipes && minishell->nb_cmd > 1)
+	if (minishell->pipes)
 	{
 		free_pipes(minishell, minishell->pipes);
 		minishell->pipes = NULL;

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:16:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 20:50:11 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:39:04 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int	open_heredoc(char *input_file)
 char	*create_temp_file(int *heredoc_counter)
 {
 	char	*file;
+	char	*counter;
 
-	file = ft_strjoin("/tmp/heredoc", ft_itoa(*heredoc_counter));
+	counter = ft_itoa(*heredoc_counter);
+	file = ft_strjoin("/tmp/heredoc", counter);
+	free(counter);
 	return (file);
 }
 

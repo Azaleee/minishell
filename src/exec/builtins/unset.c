@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.C                                            :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 15:46:15 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/21 16:09:35 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:53:44 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,11 @@ static void	del_env(char *arg, char ***env)
 	*env = new_env;
 }
 
-
-void unset(t_args *args, char ***env)
+void	unset(t_args *args, char ***env)
 {
 	args = args->next;
 	if (!args)
-	{
-		ft_putstr_fd("unset: not enough arguments\n", STDOUT_FILENO);
 		return ;
-	}
 	while (args)
 	{
 		del_env(args->arg, env);

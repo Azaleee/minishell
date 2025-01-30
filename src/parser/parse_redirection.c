@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 20:53:32 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:26:16 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,7 @@ int	check_file_redir(t_cmds *cmds, char *file, int mode)
 	return (fd);
 }
 
-// void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
-// {
-// 	pid_t	pid;
-// 	int		status;
-
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		if ((*token)->token_type == DLESS)
-// 		{
-// 			free(cmds->input_file);
-// 			cmds->input_file = create_temp_file(heredoc_counter);
-// 			read_heredoc((char *)(*token)->next->value, cmds->input_file);
-// 			exit(0);
-// 		}
-// 	}
-// 	(*token) = (*token)->next;
-// 	waitpid(pid, &status, 0);
-// 	if (WIFEXITED(status))
-// 		g_error_code = WEXITSTATUS(status);
-// }
-
-void	handle_heredoc_child(int pipe_fd[2], t_lexer **token, int *heredoc_counter)
+void	handle_heredoc_child(t_cmds *cmds, t_minishell *minishell, int pipe_fd[2], t_lexer **token, int *heredoc_counter)
 {
 	char    *temp_file;
 
@@ -64,6 +42,8 @@ void	handle_heredoc_child(int pipe_fd[2], t_lexer **token, int *heredoc_counter)
 	read_heredoc((char *)(*token)->next->value, temp_file);
 	write(pipe_fd[1], temp_file, strlen(temp_file) + 1);
 	free(temp_file);
+	cmds_clear(&cmds);
+	free_all(minishell);
 	close(pipe_fd[1]);
 	exit(0);
 }
@@ -77,8 +57,6 @@ void	handle_heredoc_parent(int pipe_fd[2], t_cmds *cmds, t_lexer **token, pid_t 
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	signal(SIGINT, SIG_DFL);
-	if (WIFEXITED(status))
-		g_error_code = WEXITSTATUS(status);
 	if (read(pipe_fd[0], temp_file, sizeof(temp_file)) > 0)
 		cmds->input_file = ft_strdup(temp_file);
 	else
@@ -90,7 +68,7 @@ void	handle_heredoc_parent(int pipe_fd[2], t_cmds *cmds, t_lexer **token, pid_t 
 	*token = (*token)->next;
 }
 
-void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
@@ -109,19 +87,22 @@ void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter)
 			exit(1);
 		}
 		if (pid == 0)
-			handle_heredoc_child(pipe_fd, token, heredoc_counter);
+			handle_heredoc_child(cmds, minishell, pipe_fd, token, minishell->heredoc_counter);
 		else
 			handle_heredoc_parent(pipe_fd, cmds, token, pid);
-		(*heredoc_counter)++;
+		(*minishell->heredoc_counter)++;
 	}
 }
 
 void	get_input_redir(t_cmds *cmds, t_lexer **token)
 {
+	int	fd;
+
+	fd = 0;
 	if ((*token)->token_type == LESS)
 	{
-		if (check_file_redir(cmds, (*token)->next->value, 0) != -1
-			&& cmds->error_file != -1)
+		fd = check_file_redir(cmds, (*token)->next->value, 0); 
+		if (fd != -1 && cmds->error_file != -1)
 		{
 			free(cmds->input_file);
 			cmds->input_file = ft_strdup((*token)->next->value);
@@ -134,15 +115,19 @@ void	get_input_redir(t_cmds *cmds, t_lexer **token)
 			cmds->error_file = -1;
 			(*token) = (*token)->next;
 		}
+		close(fd);
 	}
 }
 
 void	get_output_redir(t_cmds *cmds, t_lexer **token)
 {
+	int	fd;
+
+	fd = 0;
 	if ((*token)->token_type == GREAT)
 	{
-		if (check_file_redir(cmds, (*token)->next->value, 1) != -1
-			&& cmds->error_file != -1)
+		fd = check_file_redir(cmds, (*token)->next->value, 1);
+		if (fd != -1 && cmds->error_file != -1)
 		{
 			if (cmds->output_file)
 				free(cmds->output_file);
@@ -157,6 +142,7 @@ void	get_output_redir(t_cmds *cmds, t_lexer **token)
 			cmds->error_file = -1;
 			(*token) = (*token)->next;
 		}
+		close(fd);
 	}
 }
 

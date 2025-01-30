@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:13:03 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/20 14:49:14 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:42:19 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,26 @@ int	cd(t_args *args, char ***env)
 	char	*path;
 	char	*pwd;
 
+	if (args->next && args->next->next)
+	{
+		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+		return (g_error_code = 1, FALSE);
+	}
 	path = get_cd_path(args, *env);
 	if (!path)
-		return (FALSE);
+		return (g_error_code = 1, FALSE);
 	pwd = getcwd(NULL, 0);
 	if (chdir(path) == -1)
 	{
 		free(pwd);
 		print_cd_error(path);
-		return (FALSE);
+		return (g_error_code = 1, FALSE);
 	}
 	set_env_value("OLDPWD", pwd, env);
 	free(pwd);
 	pwd = getcwd(NULL, 0);
 	set_env_value("PWD", pwd, env);
 	free(pwd);
-	return (TRUE);
+	free(path);
+	return (g_error_code = 0, TRUE);
 }

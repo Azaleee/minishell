@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:23:35 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/21 12:35:35 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:46:44 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	handle_export_arg(char *arg, char ***env)
 	if (!is_valid_identifier(arg))
 	{
 		print_export_error(arg);
-		return (FALSE);
+		return (g_error_code = 1, FALSE);
 	}
 	equal_pos = ft_strchr(arg, '=');
 	if (equal_pos)

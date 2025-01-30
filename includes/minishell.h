@@ -26,6 +26,8 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <signal.h>
+# include <bits/sigaction.h>
+# include <asm-generic/signal-defs.h>
 
 /**************************
  **     DEFINITIONS     **
@@ -104,11 +106,20 @@ typedef struct s_minishell
 	int				nb_cmd;
 	int				exit_code;
 	int				*heredoc_counter;
+	char			*pwd;
 }					t_minishell;
 
 /**************************
  **    FUNCTION PROTOS  **
  **************************/
+
+/**
+ * Signal Handler
+ */
+void	init_signals(void);
+void	handle_sigquit(int signal);
+void	handle_sigint_cmd(int signal);
+void	handle_sigint_heredoc(int sig);
 
 /**
  * Built-in Functions
@@ -137,9 +148,11 @@ void	execute_all(t_minishell *minishell);
 /**
  * Built-ins Manager
  */
-int		is_builtin(char *cmd);
-void	execute_builtin(t_cmds *current, t_minishell *minishell,
-			int builtin_id);
+int		is_builtin_parent(char *cmd);
+int		is_builtin_child(char *cmd);
+void	execute_builtin_child(t_cmds *cmd, t_minishell *minishell, int builtin_id);
+int		execute_builtin_parent(t_cmds *cmd, t_minishell *minishell);
+
 
 /**
  * Pipes Management
@@ -170,7 +183,7 @@ void	set_output_redir(t_cmds *current, t_minishell *minishell, int i);
  */
 int		open_heredoc(char *input_file);
 void	read_heredoc(char *eof, char *input_file);
-void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter);
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token);
 void	get_input_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token);
@@ -193,7 +206,7 @@ void	clean_word_token(t_minishell *minishell, char **env);
 /**
  * Command Structure Filling
  */
-void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter);
+void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token);
 
 /**
  * Utility Functions
@@ -210,13 +223,14 @@ t_cmds	*init_cmd(void);
 t_args	*init_arg(char *value);
 t_lexer	*new_token(char *content, t_tok_t token);
 void	args_clear(t_args **args);
-void	cmds_clear(t_minishell *minishell);
+void	cmds_clear(t_cmds **cmds);
 void	token_clear(t_minishell *minishell);
 char	**set_env_value(char *env_var, char *env_value, char ***env);
 char	*get_env_value(char *env_var, char **env);
 char	**env_cpy(char **env);
 void	free_tab(char **tab);
 void	free_all(t_minishell *minishell);
+void	exit_and_free(t_minishell *minishell, int exit_code);
 int		syntax_checker(char *msg_error, char *arg, char *line,
 			int (*check)(char *));
 int		print_error(char *message, char *cmd, int exit_code,

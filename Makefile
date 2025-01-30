@@ -20,7 +20,8 @@ LEXER_DIR =			lexer/
 LEXER_FILES =		lexer.c lexer_utils.c
 
 UTILS_DIR =			utils/
-UTILS_FILES =		check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c env_utils.c
+UTILS_FILES =		check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c env_utils.c \
+					signal_handler.c
 
 LIST_HANDLE_DIR =	utils/list_handle/
 LIST_HANDLE_FILES =	getter.c setter.c lst_add_back.c lst_init.c lst_clear.c

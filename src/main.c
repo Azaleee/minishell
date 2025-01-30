@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/21 16:31:58 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/29 17:22:27 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ t_minishell	*init_minishell(char **env)
 	minishell->nb_cmd = 0;
 	minishell->exit_code = 0;
 	minishell->heredoc_counter = malloc(sizeof(int));
+	*minishell->heredoc_counter = 0;
+	minishell->nb_cmd = 0;
+	minishell->pipes = NULL;
+	minishell->pid = NULL;
+	minishell->pwd = NULL;
 	if (!minishell)
 		exit(EXIT_FAILURE);
 	return (minishell);
@@ -33,19 +38,28 @@ t_minishell	*init_minishell(char **env)
 char	*pwd_print_readline(char **env)
 {
 	char	*pwd;
+	char	*temp;
 
-	if (!get_env_value("PWD", env))
-		return (strdup("\e[1;32m➜\e[0m \e[1;36m$ \e[0m"));
+	temp = get_env_value("PWD", env);
+	if (!temp)
+	{
+		free(temp);
+		return (ft_strdup("\e[1;32m➜\e[0m \e[1;36m$ \e[0m"));
+	}
+	free(temp);
+	temp = get_env_value("PWD", env);
 	pwd = malloc(ft_strlen("\e[1;32m➜\e[0m \e[1;36m") \
-	+ ft_strlen(get_env_value("PWD", env))
+	+ ft_strlen(temp)
 			+ ft_strlen("$ \e[0m") + 1);
 	ft_strlcpy(pwd, "\e[1;32m➜\e[0m \e[1;36m",
 		ft_strlen("\e[1;32m➜ \e[0m\e[1;36m") + 1);
-	ft_strlcat(pwd, get_env_value("PWD", env), ft_strlen(pwd) \
-	+ ft_strlen(get_env_value("PWD", env))
+	free(temp);
+	temp = get_env_value("PWD", env);
+	ft_strlcat(pwd, temp, ft_strlen(pwd) \
+	+ ft_strlen(temp)
 		+ 1);
 	ft_strlcat(pwd, "$ \e[0m", ft_strlen(pwd) + ft_strlen("$ \e[0m") + 1);
-	return (pwd);
+	return (free(temp), pwd);
 }
 
 // printf_all_cmd(minishell->cmds);
@@ -60,10 +74,11 @@ void	shell_loop(t_minishell *minishell, char *line)
 			if (syntax_token_good(minishell->input))
 			{
 				clean_word_token(minishell, minishell->env);
-				fill_struct_cmds(&minishell->cmds, minishell->input,
-					minishell->heredoc_counter);
-				execute_all(minishell);
-				cmds_clear(minishell);
+				display_tokens(minishell->input);
+				fill_struct_cmds(minishell, &minishell->cmds, minishell->input);
+				if (minishell->cmds->args)
+					execute_all(minishell);
+				cmds_clear(&minishell->cmds);
 			}
 			token_clear(minishell);
 		}
@@ -71,31 +86,20 @@ void	shell_loop(t_minishell *minishell, char *line)
 	free(line);
 }
 
-void	sigint_handler(int sig)
-{
-	(void)sig;
-	g_error_code = 1;
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	// rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 int	main(int ac, char **av, char **env)
 {
 	char		*line;
 	t_minishell	*minishell;
-	char		*pwd;
 
 	line = NULL;
 	(void)ac;
 	(void)av;
 	minishell = init_minishell(env);
-	signal(SIGINT, sigint_handler);
+	init_signals();
 	while (1)
 	{
-		pwd = pwd_print_readline(minishell->env);
-		line = readline(pwd);
+		minishell->pwd = pwd_print_readline(minishell->env);
+		line = readline(minishell->pwd);
 		if (!line)
 		{
 			write(1, "exit\n", 5);
@@ -103,11 +107,10 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(line);
 		shell_loop(minishell, line);
-		free(pwd);
+		printf("g_error_code = %d\n", g_error_code);
+		free(minishell->pwd);
 	}
 	free(line);
-	if (pwd)
-		free(pwd);
 	free_all(minishell);
 }
 // valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl.txt

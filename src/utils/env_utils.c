@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:05:59 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/20 13:33:49 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/29 16:28:45 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// char	*get_env_value(char *env_var, char **env)
+// {
+// 	int		i;
+// 	char	*temp;
+// 	char	*itoa_value;
+
+// 	i = 0;
+// 	temp = NULL;
+// 	if (strncmp(env_var, "?", 1) == 0)
+// 	{
+// 		itoa_value = ft_itoa(g_error_code);
+// 		ft_strlcpy(temp, itoa_value, ft_strlen(itoa_value) + 1);
+// 		free(itoa_value);
+// 		return (temp);
+// 	}
+// 	while (env[i])
+// 	{
+// 		if (ft_strncmp(env[i], env_var, ft_strlen(env_var)) == 0
+// 			&& env[i][ft_strlen(env_var)] == '=')
+// 		{
+// 			return (ft_strlen(env_var) + env[i] + 1);
+// 		}
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
 
 char	*get_env_value(char *env_var, char **env)
 {
@@ -24,10 +51,11 @@ char	*get_env_value(char *env_var, char **env)
 		if (ft_strncmp(env[i], env_var, ft_strlen(env_var)) == 0
 			&& env[i][ft_strlen(env_var)] == '=')
 		{
-			return (env[i] + ft_strlen(env_var) + 1);
+			return (ft_strdup(ft_strlen(env_var) + env[i] + 1));
 		}
 		i++;
 	}
+	printf("env_var = %s\n", env_var);
 	return (NULL);
 }
 
