@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 16:27:14 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/30 11:44:54 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_env_var(char *value, size_t *start)
 			break ;
 		}
 		j++;
-		printf("value[j] = %c\n", value[j]);
+		// printf("value[j] = %c\n", value[j]); // Debug
 	}
 	if (j == i)
 		return (NULL);
@@ -56,7 +56,7 @@ char	*expand_env_var(char *value, char **env, size_t i)
 				continue ;
 			}
 			env_value = get_env_value(env_var, env);
-			printf("env_value = %s\n", env_value);
+			// printf("env_value = %s\n", env_value); // Debug
 			value = replace_actual(value, env_value, env_var, start);
 			i = start + ft_strlen(env_value);
 			if (env_value)
