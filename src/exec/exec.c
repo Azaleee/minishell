@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 16:52:16 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/30 16:04:45 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	count_cmd(t_cmds *cmds)
 {
@@ -47,10 +48,26 @@ void	wait_child(t_minishell *minishell)
 	}
 }
 
+void	bultins_exe(int builtin_id_parent, int builtin_id, t_cmds *current, \
+t_minishell *minishell)
+{
+	if (builtin_id)
+	{
+		execute_builtin_child(current, minishell, builtin_id);
+		exit_and_free(minishell, 0);
+	}
+	if (builtin_id_parent)
+	{
+		execute_builtin_parent(current, minishell);
+		exit_and_free(minishell, 0);
+	}
+}
+
 void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 {
 	char	**cmd;
 	int		builtin_id;
+	int		builtin_idparent;
 
 	if (current->error_file == -1)
 		exit_and_free(minishell, 1);
@@ -58,11 +75,8 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	set_output_redir(current, minishell, i);
 	close_all_pipes(minishell);
 	builtin_id = is_builtin_child(current->args->arg);
-	if (builtin_id)
-	{
-		execute_builtin_child(current, minishell, builtin_id);
-		exit_and_free(minishell, 0);
-	}
+	builtin_idparent = is_builtin_parent(current->args->arg);
+	bultins_exe(builtin_idparent, builtin_id, current, minishell);
 	cmd = fill_cmd_tab(current->args);
 	parse_and_check_cmd(minishell, current, cmd);
 	execve(current->path_cmd, cmd, minishell->env);

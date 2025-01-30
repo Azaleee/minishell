@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:33:05 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/19 00:48:51 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/30 16:04:35 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
 			get_env_value("PATH", minishell->env));
 	if (ft_strchr(cmd[0], '/') != NULL)
 		check_access_cmd(minishell, cmd[0]);
-	if (access(current->path_cmd, F_OK) == -1 || cmd[0][0] == '\0')
+	if ((access(current->path_cmd, F_OK) == -1 || cmd[0][0] == '\0') \
+		&& is_builtin_parent(cmd[0]) == 0)
 		print_error("command not found: ", cmd[0], 127, minishell);
 }

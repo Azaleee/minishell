@@ -145,6 +145,8 @@ void	print_sorted_env(char **env);
  */
 void	execute_all(t_minishell *minishell);
 
+void	bultins_exe(int builtin_in_parent, int builtin_id, t_cmds *current, t_minishell *minishell);
+
 /**
  * Built-ins Manager
  */
