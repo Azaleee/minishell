@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:53:48 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/31 15:08:33 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 16:53:56 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_exit(t_minishell *minishell, int nb_commands)
 	if (minishell->cmds->args && minishell->cmds->args->next)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
-		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd(" too many arguments\n", STDERR_FILENO);
 		g_error_code = 1;
 		return (TRUE);
 	}
