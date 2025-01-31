@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:15:51 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:24:24 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 {
 	char	**cmd;
 	int		builtin_id;
-	int		builtin_idparent;
 
 	if (current->error_file == -1)
 		exit_and_free(minishell, g_error_code);
