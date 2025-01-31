@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:51:30 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 16:39:13 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 16:53:05 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ void	args_clear(t_args **args)
 	while (current)
 	{
 		temp = current->next;
-		if (current->arg)
-			free(current->arg);
-		free(current);
+		if (current)
+			free(current);
 		current = temp;
 	}
 	args = NULL;
