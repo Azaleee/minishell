@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:33:05 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:13:57 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:42:27 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	check_access_cmd(t_minishell *minishell, char **cmd)
 	if (access(cmd[0], F_OK) == -1)
 	{
 		if (errno == ENOENT)
-			print_error("no such file or directory: ", cmd, 127, minishell);
+			print_error("No such file or directory: ", cmd, 127, minishell);
 	}
 	if (access(cmd[0], X_OK) == -1)
 	{
@@ -107,9 +107,10 @@ void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
 	env_value = get_env_value("PATH", minishell->env);
 	current->path_cmd = get_path_cmd(cmd[0], env_value);
 	free(env_value);
+	if (ft_strchr(cmd[0], '/') != NULL)
+		check_access_cmd(minishell, cmd);
 	if (access(current->path_cmd, F_OK) == -1 || cmd[0][0] == '\0')
 	{
-		check_access_cmd(minishell, cmd);
 		print_error("command not found: ", cmd, 127, minishell);
 	}
 }

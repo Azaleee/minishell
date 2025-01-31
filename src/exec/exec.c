@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:24:24 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:29:12 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,20 @@ void	wait_child(t_minishell *minishell)
 	}
 }
 
-void	bultins_exe(int builtin_id_parent, int builtin_id, t_cmds *current, \
-t_minishell *minishell)
-{
-	if (builtin_id)
-	{
-		execute_builtin_child(current, minishell, builtin_id);
-		exit_and_free(minishell, 0);
-	}
-	if (builtin_id_parent)
-	{
-		execute_builtin_parent(current, minishell);
-		exit_and_free(minishell, 0);
-	}
-}
+// void	bultins_exe(int builtin_id_parent, int builtin_id, t_cmds *current, \
+// t_minishell *minishell)
+// {
+// 	if (builtin_id)
+// 	{
+// 		execute_builtin_child(current, minishell, builtin_id);
+// 		exit_and_free(minishell, 0);
+// 	}
+// 	if (builtin_id_parent)
+// 	{
+// 		execute_builtin_parent(current, minishell);
+// 		exit_and_free(minishell, 0);
+// 	}
+// }
 
 void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 {
@@ -68,7 +68,7 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	int		builtin_id;
 
 	if (current->error_file == -1)
-		exit_and_free(minishell, g_error_code);
+		exit_and_free(minishell, 1);
 	set_input_redir(current, minishell, i);
 	set_output_redir(current, minishell, i);
 	close_all_pipes(minishell);
