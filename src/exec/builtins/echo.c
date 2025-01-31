@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:17:23 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/29 13:46:06 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:00:59 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	echo(t_args *args, char **env)
 			new_line = 0;
 		else
 		{
-			ft_putstr(args->arg);
+			ft_putstr_fd(args->arg, STDOUT_FILENO);
 			if (args->next)
 				ft_putstr_fd(" ", STDOUT_FILENO);
 		}
