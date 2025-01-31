@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_clear.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:51:30 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 16:53:05 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 20:22:40 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	cmds_clear(t_cmds **cmds)
 	t_cmds	*current;
 
 	if (*cmds == NULL)
-	{
-		// printf("cmds_clear: cmds is NULL\n"); // debug
 		return ;
-	}
 	current = *cmds;
 	while (current)
 	{

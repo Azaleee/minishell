@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 16:38:17 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/30 11:25:08 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 19:41:21 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ int	syntax_checker(char *msg_error, char *arg, char *line, int (*check)(char *))
 	return (FALSE);
 }
 
-int	print_error(char *message, char *cmd, int exit_code,
+int	print_error(char *message, char **cmd, int exit_code,
 	t_minishell *minishell)
 {
 	if (message)
 		write(STDERR_FILENO, message, ft_strlen(message));
 	if (cmd)
-		write(STDERR_FILENO, cmd, ft_strlen(cmd));
+		write(STDERR_FILENO, cmd[0], ft_strlen(cmd[0]));
 	if (message || cmd)
 		write(STDERR_FILENO, "\n", 1);
+	if (cmd)
+		free_tab(cmd);
 	free_all(minishell);
 	exit(exit_code);
 }

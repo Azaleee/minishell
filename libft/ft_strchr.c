@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 17:57:26 by mosmont           #+#    #+#             */
-/*   Updated: 2024/10/24 15:58:00 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 19:18:24 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*ft_strchr(const char *str, int c)
 {
 	const char	*temp;
 
+	if (!str)
+		return (NULL);
 	temp = str;
 	while (*temp)
 	{

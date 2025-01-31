@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:13:03 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/30 12:54:28 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 20:17:15 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,5 @@ int	cd(t_args *args, char ***env)
 	pwd = getcwd(NULL, 0);
 	set_env_value("PWD", pwd, env);
 	free(pwd);
-	return (1);
+	return (g_error_code = 0, TRUE);
 }

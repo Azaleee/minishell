@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:07:52 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:15:51 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,29 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	set_input_redir(current, minishell, i);
 	set_output_redir(current, minishell, i);
 	close_all_pipes(minishell);
-	builtin_id = is_builtin_child(current->args->arg);
-	builtin_idparent = is_builtin_parent(current->args->arg);
-	bultins_exe(builtin_idparent, builtin_id, current, minishell);
+	builtin_id = is_builtin(current->args->arg);
+	if (builtin_id >= 5 && builtin_id <= 7)
+	{
+		execute_builtin_child(current, minishell, builtin_id);
+		exit_and_free(minishell, 0);
+	}
+	else if (builtin_id >= 1 && builtin_id <= 4)
+		exit_and_free(minishell, 0);
 	cmd = fill_cmd_tab(current->args);
+	if (cmd == NULL)
+		exit_and_free(minishell, 0);
 	parse_and_check_cmd(minishell, current, cmd);
 	execve(current->path_cmd, cmd, minishell->env);
 	perror("execve");
-	if (errno == ENOENT)
-		exit(127);
-	else if (errno == EACCES)
-		exit(126);
+	free_all(minishell);
+	free_tab(cmd);
 	exit(1);
+}
+
+void	handle_sigint_cmd_exec(void)
+{
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, handle_sigint_cmd);
 }
 
 void	execute_all(t_minishell *minishell)
@@ -95,14 +106,14 @@ void	execute_all(t_minishell *minishell)
 	current_cmd = minishell->cmds;
 	i = 0;
 	minishell->nb_cmd = count_cmd(minishell->cmds);
-	if (minishell->nb_cmd == 1 && execute_builtin_parent(minishell->cmds, minishell))
+	if (minishell->nb_cmd == 1
+		&& execute_builtin_parent(minishell->cmds, minishell))
 		return ;
 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
 	init_pipes(minishell, minishell->nb_cmd);
 	while (current_cmd)
 	{
-		signal(SIGQUIT, handle_sigquit);
-		signal(SIGINT, handle_sigint_cmd);
+		handle_sigint_cmd_exec();
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == 0)
 			execute_cmd(current_cmd, minishell, i);
@@ -112,10 +123,7 @@ void	execute_all(t_minishell *minishell)
 	close_all_pipes(minishell);
 	wait_child(minishell);
 	init_signals();
-	free_pipes(minishell, minishell->pipes);
-	minishell->pipes = NULL;
-	free(minishell->pid);
-	minishell->pid = NULL;
+	free_after_exec(minishell);
 }
 
 // void	execute_all(t_minishell *minishell)

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:47:24 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:08:34 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:11:41 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ void	exit_and_free(t_minishell *minishell, int exit_code)
 	exit(exit_code);
 }
 
+void	free_after_exec(t_minishell *minishell)
+{
+	free_pipes(minishell, minishell->pipes);
+	minishell->pipes = NULL;
+	free(minishell->pid);
+	minishell->pid = NULL;
+}
+
 void	free_all(t_minishell *minishell)
 {
 	if (!minishell)
@@ -46,8 +54,8 @@ void	free_all(t_minishell *minishell)
 		free(minishell->pwd);
 	if (minishell->input)
 		token_clear(minishell);
-	// fprintf(stderr, "free_cmd\n"); // debug
-	cmds_clear(&minishell->cmds);
+	if (minishell->cmds)
+		cmds_clear(&minishell->cmds);
 	if (minishell->env)
 		free_tab(minishell->env);
 	if (minishell->pid)

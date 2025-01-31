@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:16:12 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 16:53:58 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:20:59 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	read_heredoc(char *eof, char *input_file)
 {
 	char	*line;
 	int		fd;
-	
+
 	line = NULL;
 	fd = open_heredoc(input_file);
 	while (1)
