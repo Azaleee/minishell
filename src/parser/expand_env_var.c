@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 16:27:14 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:51:47 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char	*expand_env_var(char *value, char **env, size_t i)
 		else
 			i++;
 	}
+	if (g_error_code == 130)
+		g_error_code = 0;
 	return (value);
 }
 

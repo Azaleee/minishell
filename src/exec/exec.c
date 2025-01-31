@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 16:52:16 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:43:37 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	int		builtin_id;
 
 	if (current->error_file == -1)
-		exit_and_free(minishell, 1);
+		exit_and_free(minishell, g_error_code);
 	set_input_redir(current, minishell, i);
 	set_output_redir(current, minishell, i);
 	close_all_pipes(minishell);
@@ -82,7 +82,6 @@ void	execute_all(t_minishell *minishell)
 	current_cmd = minishell->cmds;
 	i = 0;
 	minishell->nb_cmd = count_cmd(minishell->cmds);
-	minishell->pid = NULL;
 	if (minishell->nb_cmd == 1 && execute_builtin_parent(minishell->cmds, minishell))
 		return ;
 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
