@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:53:48 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/31 20:30:42 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:56:19 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_exit(t_minishell *minishell, int nb_commands)
 
 	next_arg = minishell->cmds->args->next;
 	if (next_arg && next_arg->next)
-		print_error("\nexit\ntoo many arguments", NULL, 1, minishell);
+		print_error(" too many arguments\n", NULL, 1, minishell);
 	if (next_arg)
 		exit_args(next_arg, minishell);
 	if (nb_commands > 1)

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:33:05 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:42:27 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:55:06 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,15 @@ void	check_access_cmd(t_minishell *minishell, char **cmd)
 	if (access(cmd[0], F_OK) == -1)
 	{
 		if (errno == ENOENT)
-			print_error("No such file or directory: ", cmd, 127, minishell);
+			print_error(": No such file or directory", cmd, 127, minishell);
 	}
 	if (access(cmd[0], X_OK) == -1)
 	{
 		if (errno == EACCES)
-			print_error("permission denied: ", cmd, 126, minishell);
+			print_error(": Permission denied", cmd, 126, minishell);
 	}
 	if (stat(cmd[0], &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
-		print_error("Is a directory: ", cmd, 126, minishell);
+		print_error(": Is a directory", cmd, 126, minishell);
 }
 
 void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
@@ -111,6 +111,6 @@ void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
 		check_access_cmd(minishell, cmd);
 	if (access(current->path_cmd, F_OK) == -1 || cmd[0][0] == '\0')
 	{
-		print_error("command not found: ", cmd, 127, minishell);
+		print_error(": command not found", cmd, 127, minishell);
 	}
 }
