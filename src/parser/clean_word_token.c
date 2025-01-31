@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 16:17:07 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 18:15:21 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,6 @@ void	clean_word_token(t_minishell *minishell, char **env)
 		}
 		current = current->next;
 	}
+	if (g_error_code == 130)
+		g_error_code = 0;
 }

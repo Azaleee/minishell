@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:10:22 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 16:29:18 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 17:53:20 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,4 @@ void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token)
 	if (current_cmd)
 		lst_add_back((void **)cmds, current_cmd,
 			get_next_cmd, set_next_cmd);
-	printf_all_cmd(*cmds);
 }

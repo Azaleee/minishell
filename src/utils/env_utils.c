@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:05:59 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 16:28:45 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 19:28:45 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ char	*get_env_value(char *env_var, char **env)
 		}
 		i++;
 	}
-	printf("env_var = %s\n", env_var);
 	return (NULL);
 }
 

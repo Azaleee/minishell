@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:51:30 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 17:14:42 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 18:07:35 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	cmds_clear(t_cmds **cmds)
 	t_cmds	*current;
 
 	if (*cmds == NULL)
-	{
-		printf("cmds_clear: cmds is NULL\n");
 		return ;
-	}
 	current = *cmds;
 	while (current)
 	{

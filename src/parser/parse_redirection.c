@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 16:47:21 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 19:33:18 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	get_input_redir(t_cmds *cmds, t_lexer **token)
 	fd = 0;
 	if ((*token)->token_type == LESS)
 	{
-		fd = check_file_redir(cmds, (*token)->next->value, 0); 
+		fd = check_file_redir(cmds, (*token)->next->value, 0);
 		if (fd != -1 && cmds->error_file != -1)
 		{
 			free(cmds->input_file);

@@ -150,11 +150,10 @@ void	execute_all(t_minishell *minishell);
 /**
  * Built-ins Manager
  */
-int		is_builtin_parent(char *cmd);
-int		is_builtin_child(char *cmd);
-void	execute_builtin_child(t_cmds *cmd, t_minishell *minishell, int builtin_id);
+int		is_builtin(char *cmd);
+void	execute_builtin_child(t_cmds *cmd, t_minishell *minishell,
+			int builtin_id);
 int		execute_builtin_parent(t_cmds *cmd, t_minishell *minishell);
-
 
 /**
  * Pipes Management
@@ -169,7 +168,7 @@ void	close_unused_pipes(t_minishell *minishell, int i);
  */
 char	*get_path_cmd(char *cmd, char *path);
 char	**fill_cmd_tab(t_args *args);
-void	check_access_cmd(t_minishell *minishell, char *path_cmd);
+void	check_access_cmd(t_minishell *minishell, char **cmd);
 void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current,
 			char **cmd);
 
@@ -185,7 +184,8 @@ void	set_output_redir(t_cmds *current, t_minishell *minishell, int i);
  */
 int		open_heredoc(char *input_file);
 void	read_heredoc(char *eof, char *input_file);
-void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token);
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds,
+			t_lexer **token);
 void	get_input_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token);
@@ -232,10 +232,11 @@ char	*get_env_value(char *env_var, char **env);
 char	**env_cpy(char **env);
 void	free_tab(char **tab);
 void	free_all(t_minishell *minishell);
+void	free_after_exec(t_minishell *minishell);
 void	exit_and_free(t_minishell *minishell, int exit_code);
 int		syntax_checker(char *msg_error, char *arg, char *line,
 			int (*check)(char *));
-int		print_error(char *message, char *cmd, int exit_code,
+int		print_error(char *message, char **cmd, int exit_code,
 			t_minishell *minishell);
 int		check_all_syntax(char *line);
 int		syntax_token_good(t_lexer *token);
