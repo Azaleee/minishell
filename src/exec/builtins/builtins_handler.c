@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:12:49 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 13:03:46 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 14:29:59 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,12 @@ int	is_builtin_child(char *cmd)
 
 void	execute_builtin_child(t_cmds *cmd, t_minishell *minishell, int builtin_id)
 {
-	(void)cmd;
 	if (builtin_id == 1)
 		pwd();
 	if (builtin_id == 2)
 		print_env(minishell->env);
 	if (builtin_id == 7)
-		echo(minishell->cmds->args, minishell->env);
+		echo(cmd->args, minishell->env);
 }
 
 int	execute_builtin_parent(t_cmds *cmd, t_minishell *minishell)
