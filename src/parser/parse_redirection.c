@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/29 17:26:16 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:47:21 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,64 +33,26 @@ int	check_file_redir(t_cmds *cmds, char *file, int mode)
 	return (fd);
 }
 
-void	handle_heredoc_child(t_cmds *cmds, t_minishell *minishell, int pipe_fd[2], t_lexer **token, int *heredoc_counter)
-{
-	char    *temp_file;
-
-	close(pipe_fd[0]);
-	temp_file = create_temp_file(heredoc_counter);
-	read_heredoc((char *)(*token)->next->value, temp_file);
-	write(pipe_fd[1], temp_file, strlen(temp_file) + 1);
-	free(temp_file);
-	cmds_clear(&cmds);
-	free_all(minishell);
-	close(pipe_fd[1]);
-	exit(0);
-}
-
-void	handle_heredoc_parent(int pipe_fd[2], t_cmds *cmds, t_lexer **token, pid_t pid)
-{
-	int     status;
-	char    temp_file[256];
-
-	close(pipe_fd[1]);
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	signal(SIGINT, SIG_DFL);
-	if (read(pipe_fd[0], temp_file, sizeof(temp_file)) > 0)
-		cmds->input_file = ft_strdup(temp_file);
-	else
-	{
-		cmds->input_file = NULL;
-		cmds->error_file = -1;
-	}
-	close(pipe_fd[0]);
-	*token = (*token)->next;
-}
-
 void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds, t_lexer **token)
 {
-	int		pipe_fd[2];
-	pid_t	pid;
+	char	*temp_file;
 
 	if ((*token)->token_type == DLESS)
 	{
-		if (pipe(pipe_fd) == -1)
+		temp_file = create_temp_file(minishell->heredoc_counter);
+		sigaction_handle();
+		read_heredoc((char *)(*token)->next->value, temp_file);
+		signal(SIGINT, handle_sigint);
+		if (g_error_code == 130)
 		{
-			perror("pipe");
-			exit(1);
+			unlink(temp_file);
+			cmds->error_file = -1;
 		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(1);
-		}
-		if (pid == 0)
-			handle_heredoc_child(cmds, minishell, pipe_fd, token, minishell->heredoc_counter);
 		else
-			handle_heredoc_parent(pipe_fd, cmds, token, pid);
+			cmds->input_file = ft_strdup(temp_file);
+		free(temp_file);
 		(*minishell->heredoc_counter)++;
+		*token = (*token)->next;
 	}
 }
 

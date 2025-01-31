@@ -120,6 +120,8 @@ void	init_signals(void);
 void	handle_sigquit(int signal);
 void	handle_sigint_cmd(int signal);
 void	handle_sigint_heredoc(int sig);
+void	handle_sigint(int signal);
+void	sigaction_handle(void);
 
 /**
  * Built-in Functions

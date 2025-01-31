@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/30 11:36:58 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/01/31 20:05:49 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,12 @@ void	shell_loop(t_minishell *minishell, char *line)
 		if (check_all_syntax(line) == 0)
 		{
 			tokenization(minishell, line);
-			// g_error_code = syntax_token_good(minishell->input);
 			if (syntax_token_good(minishell->input))
 			{
 				clean_word_token(minishell, minishell->env);
-				// display_tokens(minishell->input); // debug
+				display_tokens(minishell->input);
 				fill_struct_cmds(minishell, &minishell->cmds, minishell->input);
-				if (minishell->cmds->args)
+				if (minishell->cmds->args && g_error_code != 130)
 					execute_all(minishell);
 				cmds_clear(&minishell->cmds);
 			}
@@ -107,7 +106,7 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(line);
 		shell_loop(minishell, line);
-		// printf("g_error_code = %d\n", g_error_code); // debug
+		printf("g_error_code = %d\n", g_error_code);
 		free(minishell->pwd);
 	}
 	free(line);
