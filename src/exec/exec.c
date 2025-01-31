@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:29:12 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:49:50 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	wait_child(t_minishell *minishell)
 	}
 }
 
-// void	bultins_exe(int builtin_id_parent, int builtin_id, t_cmds *current, \
+// void	bultins_exe(int builtin_id_parent, int builtin_id, t_cmds *current,
 // t_minishell *minishell)
 // {
 // 	if (builtin_id)
