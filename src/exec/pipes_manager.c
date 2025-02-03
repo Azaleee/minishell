@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:32:15 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 18:10:41 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/27 20:57:51 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	init_pipes(t_minishell *minishell, int nb_cmd)
 	int	i;
 
 	i = 0;
+	if (minishell->nb_cmd == 1)
+		return ;
 	minishell->pipes = malloc(sizeof(int *) * (nb_cmd - 1));
 	if (!minishell->pipes)
 		exit(EXIT_FAILURE);

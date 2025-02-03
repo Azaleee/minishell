@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_word_token.c                                 :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/09 12:37:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:46:50 by mosmont          ###   ########.fr       */
+/*   Created: 2025/01/24 11:17:23 by edetoh            #+#    #+#             */
+/*   Updated: 2025/01/31 20:17:28 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-void	clean_word_token(t_minishell *minishell, char **env)
+void	echo(t_args *args, char **env)
 {
-	t_lexer	*current;
+	int	new_line;
 
-	current = minishell->input;
-	while (current)
+	(void)env;
+	new_line = 1;
+	args = args->next;
+	while (args)
 	{
-		if (current->token_type == WORD)
+		if (ft_strncmp(args->arg, "-n", 2) == 0)
+			new_line = 0;
+		else
 		{
-			current->value = expand_env_var(current->value, env, 0);
-			remove_quote(current->value);
+			ft_putstr_fd(args->arg, STDOUT_FILENO);
+			if (args->next)
+				ft_putstr_fd(" ", STDOUT_FILENO);
 		}
-		current = current->next;
+		args = args->next;
 	}
-	if (g_error_code == 130)
-		g_error_code = 0;
+	if (new_line)
+		ft_putstr_fd("\n", STDOUT_FILENO);
 }

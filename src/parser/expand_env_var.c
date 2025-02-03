@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:30:44 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:45:58 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,19 @@ char	*get_env_var(char *value, size_t *start)
 	i = *start + 1;
 	j = i;
 	while (value[j] && check_syntax_env_var(value[j]))
+	{
+		if (value[j] == '?')
+		{
+			j++;
+			break ;
+		}
 		j++;
+	}
 	if (j == i)
 		return (NULL);
 	*start = j;
 	if (value[j] == '?')
-		return (ft_strdup(&value[j]));
+		return (ft_strdup("?"));
 	return (ft_substr(value, i, j - i));
 }
 
@@ -50,6 +57,7 @@ char	*expand_env_var(char *value, char **env, size_t i)
 			env_value = get_env_value(env_var, env);
 			value = replace_actual(value, env_value, env_var, start);
 			i = start + ft_strlen(env_value);
+			free(env_value);
 		}
 		else
 			i++;

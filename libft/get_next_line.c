@@ -6,11 +6,12 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 13:57:09 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/29 04:51:25 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 15:55:31 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../includes/minishell.h"
 
 char	*read_line(int fd, char *buffer, char *line)
 {
@@ -26,9 +27,7 @@ char	*read_line(int fd, char *buffer, char *line)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
 			return (free(line), NULL);
-		}
 		buffer[bytes_read] = '\0';
 		line = ft_strjoin_gnl(line, buffer);
 		if (line == NULL)

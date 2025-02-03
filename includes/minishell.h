@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+         +:+     */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:25:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 19:14:21 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:52:25 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
+# include <signal.h>
+# include <bits/sigaction.h>
+# include <asm-generic/signal-defs.h>
+# include <fcntl.h>
 
 /**************************
  **     DEFINITIONS     **
@@ -102,6 +107,7 @@ typedef struct s_minishell
 	int				nb_cmd;
 	int				exit_code;
 	int				*heredoc_counter;
+	char			*pwd;
 }					t_minishell;
 
 /**************************
@@ -109,21 +115,49 @@ typedef struct s_minishell
  **************************/
 
 /**
+ * Signal Handler
+ */
+void	init_signals(void);
+void	handle_sigquit(int signal);
+void	handle_sigint_cmd(int signal);
+void	handle_sigint_heredoc(int sig);
+void	handle_sigint(int signal);
+void	sigaction_handle(void);
+
+/**
  * Built-in Functions
  */
 int		pwd(void);
+void	print_env(char **env);
+int		cd(t_args *args, char ***env);
+void	unset(t_args *args, char ***env);
+int		ft_exit(t_minishell *minishell, int nb_commands);
+void	echo(t_args *args, char **env);
+
+// ------ Export ------
+int		ft_export(t_args *args, char ***env);
+
+int		is_valid_identifier(char *str);
+void	print_export_error(char *arg);
+void	sort_env(char **env);
+void	print_sorted_env(char **env);
+// ------ end export ------
 
 /**
  * Execution Handlers
  */
 void	execute_all(t_minishell *minishell);
 
+void	bultins_exe(int builtin_in_parent, int builtin_id,
+			t_cmds *current, t_minishell *minishell);
+
 /**
  * Built-ins Manager
  */
 int		is_builtin(char *cmd);
-void	execute_builtin(t_cmds *current, t_minishell *minishell,
+void	execute_builtin_child(t_cmds *cmd, t_minishell *minishell,
 			int builtin_id);
+int		execute_builtin_parent(t_cmds *cmd, t_minishell *minishell);
 
 /**
  * Pipes Management
@@ -138,7 +172,7 @@ void	close_unused_pipes(t_minishell *minishell, int i);
  */
 char	*get_path_cmd(char *cmd, char *path);
 char	**fill_cmd_tab(t_args *args);
-void	check_access_cmd(t_minishell *minishell, char *path_cmd);
+void	check_access_cmd(t_minishell *minishell, char **cmd);
 void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current,
 			char **cmd);
 
@@ -154,7 +188,8 @@ void	set_output_redir(t_cmds *current, t_minishell *minishell, int i);
  */
 int		open_heredoc(char *input_file);
 void	read_heredoc(char *eof, char *input_file);
-void	get_heredoc_redir(t_cmds *cmds, t_lexer **token, int *heredoc_counter);
+void	get_heredoc_redir(t_minishell *minishell, t_cmds *cmds,
+			t_lexer **token);
 void	get_input_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_redir(t_cmds *cmds, t_lexer **token);
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token);
@@ -177,7 +212,7 @@ void	clean_word_token(t_minishell *minishell, char **env);
 /**
  * Command Structure Filling
  */
-void	fill_struct_cmds(t_cmds **cmds, t_lexer *token, int *heredoc_counter);
+void	fill_struct_cmds(t_minishell *minishell, t_cmds **cmds, t_lexer *token);
 
 /**
  * Utility Functions
@@ -194,12 +229,15 @@ t_cmds	*init_cmd(void);
 t_args	*init_arg(char *value);
 t_lexer	*new_token(char *content, t_tok_t token);
 void	args_clear(t_args **args);
-void	cmds_clear(t_minishell *minishell);
+void	cmds_clear(t_cmds **cmds);
 void	token_clear(t_minishell *minishell);
+char	**set_env_value(char *env_var, char *env_value, char ***env);
 char	*get_env_value(char *env_var, char **env);
 char	**env_cpy(char **env);
 void	free_tab(char **tab);
 void	free_all(t_minishell *minishell);
+void	free_after_exec(t_minishell *minishell);
+void	exit_and_free(t_minishell *minishell, int exit_code);
 int		syntax_checker(char *msg_error, char *arg, char *line,
 			int (*check)(char *));
 int		print_error(char *message, char **cmd, int exit_code,

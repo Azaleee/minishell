@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:51:30 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/17 19:22:33 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:22:40 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	args_clear(t_args **args)
 	args = NULL;
 }
 
-void	cmds_clear(t_minishell *minishell)
+void	cmds_clear(t_cmds **cmds)
 {
 	t_cmds	*temp;
 	t_cmds	*current;
 
-	if (minishell->cmds == NULL)
+	if (*cmds == NULL)
 		return ;
-	current = minishell->cmds;
+	current = *cmds;
 	while (current)
 	{
 		temp = current->next;
@@ -51,7 +51,7 @@ void	cmds_clear(t_minishell *minishell)
 			free(current);
 		current = temp;
 	}
-	minishell->cmds = NULL;
+	*cmds = NULL;
 }
 
 void	token_clear(t_minishell *minishell)

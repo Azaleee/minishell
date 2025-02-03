@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/18 18:35:29 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:59:33 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	count_cmd(t_cmds *cmds)
 {
 	int	i;
 
-	if (!cmds || cmds->args->arg == NULL)
+	if (!cmds)
 		return (0);
 	i = 0;
 	while (cmds)
@@ -36,37 +36,65 @@ void	wait_child(t_minishell *minishell)
 	while (i < minishell->nb_cmd)
 	{
 		if (minishell->pid[i] > 0)
+		{
 			waitpid(minishell->pid[i], &status, 0);
-		if (WIFEXITED(status))
-			g_error_code = WEXITSTATUS(status);
+			if (WIFEXITED(status))
+				g_error_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_error_code = 128 + WTERMSIG(status);
+		}
 		i++;
 	}
 }
+
+// void	bultins_exe(int builtin_id_parent, int builtin_id, t_cmds *current,
+// t_minishell *minishell)
+// {
+// 	if (builtin_id)
+// 	{
+// 		execute_builtin_child(current, minishell, builtin_id);
+// 		exit_and_free(minishell, 0);
+// 	}
+// 	if (builtin_id_parent)
+// 	{
+// 		execute_builtin_parent(current, minishell);
+// 		exit_and_free(minishell, 0);
+// 	}
+// }
 
 void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 {
 	char	**cmd;
 	int		builtin_id;
 
-	printf("Executing command %d\n", i);
 	if (current->error_file == -1)
-		exit(1);
+		exit_and_free(minishell, 1);
 	set_input_redir(current, minishell, i);
 	set_output_redir(current, minishell, i);
-	close_unused_pipes(minishell, i);
+	close_all_pipes(minishell);
 	builtin_id = is_builtin(current->args->arg);
-	if (builtin_id)
+	if (builtin_id >= 5 && builtin_id <= 7)
 	{
-		execute_builtin(current, minishell, builtin_id);
-		free(minishell->pid);
-		free_pipes(minishell, minishell->pipes);
-		free_all(minishell);
-		exit(0);
+		execute_builtin_child(current, minishell, builtin_id);
+		exit_and_free(minishell, 0);
 	}
+	else if (builtin_id >= 1 && builtin_id <= 4)
+		exit_and_free(minishell, 0);
 	cmd = fill_cmd_tab(current->args);
+	if (cmd == NULL)
+		exit_and_free(minishell, 0);
 	parse_and_check_cmd(minishell, current, cmd);
 	execve(current->path_cmd, cmd, minishell->env);
 	perror("execve");
+	free_all(minishell);
+	free_tab(cmd);
+	exit(1);
+}
+
+void	handle_sigint_cmd_exec(void)
+{
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, handle_sigint_cmd);
 }
 
 void	execute_all(t_minishell *minishell)
@@ -74,25 +102,27 @@ void	execute_all(t_minishell *minishell)
 	int		i;
 	t_cmds	*current_cmd;
 
+	current_cmd = minishell->cmds;
 	i = 0;
 	minishell->nb_cmd = count_cmd(minishell->cmds);
+	if (minishell->nb_cmd == 1
+		&& execute_builtin_parent(minishell->cmds, minishell))
+		return ;
 	minishell->pid = (pid_t *)malloc(sizeof(pid_t) * minishell->nb_cmd);
-	current_cmd = minishell->cmds;
 	init_pipes(minishell, minishell->nb_cmd);
 	while (current_cmd)
 	{
+		handle_sigint_cmd_exec();
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == 0)
-		{
 			execute_cmd(current_cmd, minishell, i);
-		}
 		i++;
 		current_cmd = current_cmd->next;
 	}
 	close_all_pipes(minishell);
 	wait_child(minishell);
-	free_pipes(minishell, minishell->pipes);
-	free(minishell->pid);
+	init_signals();
+	free_after_exec(minishell);
 }
 
 // void	execute_all(t_minishell *minishell)

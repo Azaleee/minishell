@@ -20,7 +20,8 @@ LEXER_DIR =			lexer/
 LEXER_FILES =		lexer.c lexer_utils.c
 
 UTILS_DIR =			utils/
-UTILS_FILES =		check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c env_utils.c
+UTILS_FILES =		check_syntax.c handle_error.c quote_handler.c free_func.c check_token.c env_utils.c \
+					signal_handler.c
 
 LIST_HANDLE_DIR =	utils/list_handle/
 LIST_HANDLE_FILES =	getter.c setter.c lst_add_back.c lst_init.c lst_clear.c
@@ -35,7 +36,7 @@ EXEC_DIR =			exec/
 EXEC_FILES =		exec.c cmd_manager.c pipes_manager.c set_redirection.c
 
 BUILTIN_DIR =		exec/builtins/
-BUILTIN_FILES = 	pwd.c cd.c builtins_handler.c
+BUILTIN_FILES = 	pwd.c builtins_handler.c env.c cd.c export.c export_utils.c unset.c exit.c echo.c
 
 SRC_FILES = main.c \
 			$(addprefix $(LEXER_DIR), $(LEXER_FILES)) \
@@ -45,7 +46,7 @@ SRC_FILES = main.c \
 			$(addprefix $(EXEC_DIR), $(EXEC_FILES)) \
 			$(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES)) \
 			$(addprefix $(LIST_HANDLE_DIR), $(LIST_HANDLE_FILES))
-			
+
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
