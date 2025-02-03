@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:33:05 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 21:19:18 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:34:09 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,18 @@ void	check_access_cmd(t_minishell *minishell, char **cmd)
 void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
 {
 	char	*env_value;
+	int		check_dir;
 
 	env_value = get_env_value("PATH", minishell->env);
 	current->path_cmd = get_path_cmd(cmd[0], env_value);
 	free(env_value);
 	if (ft_strchr(cmd[0], '/') != NULL)
 		check_access_cmd(minishell, cmd);
-	if (access(current->path_cmd, X_OK) == -1 || cmd[0][0] == '\0')
+	check_dir = open(current->path_cmd, O_DIRECTORY);
+	if (access(current->path_cmd, X_OK) == -1 || cmd[0][0] == '\0'
+		|| check_dir != -1)
+	{
+		close(check_dir);
 		print_error(": command not found", cmd, 127, minishell);
+	}
 }

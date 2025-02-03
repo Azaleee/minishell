@@ -28,6 +28,7 @@
 # include <signal.h>
 # include <bits/sigaction.h>
 # include <asm-generic/signal-defs.h>
+# include <fcntl.h>
 
 /**************************
  **     DEFINITIONS     **
