@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:05:59 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:21:53 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:46:37 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	**add_env_value(char *env_var, char *env_value, char **env)
 	i = 0;
 	while (env[i])
 	{
-		new_env[i] = env[i];
+		new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	temp = ft_strjoin(env_var, "=");
@@ -110,7 +110,7 @@ char	**set_env_value(char *env_var, char *env_value, char ***env)
 	new_env = add_env_value(env_var, env_value, *env);
 	if (!new_env)
 		return (NULL);
-	free(*env);
+	free_tab(*env);
 	return (*env = new_env, *env);
 }
 

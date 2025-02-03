@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
+/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 15:46:15 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/30 10:53:44 by edetoh           ###   ########.fr       */
+/*   Updated: 2025/02/03 15:45:04 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	del_env(char *arg, char ***env)
 	j = 0;
 	while ((*env)[i])
 		i++;
-	new_env = (char **)malloc(sizeof(char *) * i);
+	new_env = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while ((*env)[i])
 	{
@@ -34,7 +34,7 @@ static void	del_env(char *arg, char ***env)
 		i++;
 	}
 	new_env[j] = NULL;
-	free(*env);
+	free_tab(*env);
 	*env = new_env;
 }
 

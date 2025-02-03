@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:33:05 by mosmont           #+#    #+#             */
-/*   Updated: 2025/02/03 15:34:09 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/03 16:24:11 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
 	if (access(current->path_cmd, X_OK) == -1 || cmd[0][0] == '\0'
 		|| check_dir != -1)
 	{
-		close(check_dir);
+		if (check_dir != -1)
+			close(check_dir);
 		print_error(": command not found", cmd, 127, minishell);
 	}
 }
