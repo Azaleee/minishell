@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:33:05 by mosmont           #+#    #+#             */
-/*   Updated: 2025/02/03 16:24:11 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/06 15:22:51 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*get_path_cmd(char *cmd, char *path)
 	char	*exec;
 
 	i = 0;
-	if (path == NULL || cmd == NULL)
-		return (NULL);
+	if (path == NULL)
+		return (ft_strdup(cmd));
 	split_path = ft_split(path, ':');
 	while (split_path[i])
 	{
@@ -118,4 +118,6 @@ void	parse_and_check_cmd(t_minishell *minishell, t_cmds *current, char **cmd)
 			close(check_dir);
 		print_error(": command not found", cmd, 127, minishell);
 	}
+	if (check_dir != -1)
+		close(check_dir);
 }

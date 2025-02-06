@@ -1,26 +1,12 @@
 {
-   readline
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   ...
-   fun:readline
-   ...
+	ignore_libreadline_leaks
+	Memcheck:Leak
+	...
+	obj:*/usr/bin/*
 }
 {
-   readline
-   Memcheck:Leak
-   match-leak-kinds: definite
-   ...
-   fun:readline
-   ...
-}
-{
-   readline-history
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:xmalloc
-   ...
-   fun:add_history
-   ...
+	ignore_libreadline_leaks
+	Memcheck:Leak
+	...
+	obj:*/libreadline.so.*
 }

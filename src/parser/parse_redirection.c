@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:21:36 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/06 15:17:51 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,13 @@ void	get_output_redir(t_cmds *cmds, t_lexer **token)
 
 void	get_output_append_redir(t_cmds *cmds, t_lexer **token)
 {
+	int	fd;
+
+	fd = 0;
 	if ((*token)->token_type == DGREAT)
 	{
-		if (check_file_redir(cmds, (*token)->next->value, 2) != -1
-			&& cmds->error_file != -1)
+		fd = check_file_redir(cmds, (*token)->next->value, 2);
+		if ( fd != -1 && cmds->error_file != -1)
 		{
 			if (cmds->output_file)
 				free(cmds->output_file);
@@ -129,5 +132,6 @@ void	get_output_append_redir(t_cmds *cmds, t_lexer **token)
 			cmds->error_file = -1;
 			(*token) = (*token)->next;
 		}
+		close(fd);
 	}
 }
