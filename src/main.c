@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:13:03 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/06 15:37:53 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	shell_loop(t_minishell *minishell, char *line)
 			{
 				clean_word_token(minishell, minishell->env);
 				fill_struct_cmds(minishell, &minishell->cmds, minishell->input);
-				if (minishell->cmds->args && g_error_code != 130)
+				if (g_error_code != 130)
 					execute_all(minishell);
 				cmds_clear(&minishell->cmds);
 			}

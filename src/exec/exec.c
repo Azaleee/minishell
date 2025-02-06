@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:49:35 by mosmont           #+#    #+#             */
-/*   Updated: 2025/02/03 15:59:33 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/06 15:35:11 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_cmd(t_cmds *current, t_minishell *minishell, int i)
 	char	**cmd;
 	int		builtin_id;
 
-	if (current->error_file == -1)
+	if (current->error_file == -1 || !current->args)
 		exit_and_free(minishell, 1);
 	set_input_redir(current, minishell, i);
 	set_output_redir(current, minishell, i);
