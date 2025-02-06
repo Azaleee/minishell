@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:53:48 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/31 20:56:19 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/06 15:13:45 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,12 @@ int	ft_exit(t_minishell *minishell, int nb_commands)
 
 	next_arg = minishell->cmds->args->next;
 	if (next_arg && next_arg->next)
-		print_error(" too many arguments\n", NULL, 1, minishell);
+	{
+		g_error_code = 1;
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_putstr_fd("exit : too many arguments\n", STDERR_FILENO);
+		return (TRUE);
+	}
 	if (next_arg)
 		exit_args(next_arg, minishell);
 	if (nb_commands > 1)
