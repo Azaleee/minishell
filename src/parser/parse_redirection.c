@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:17:53 by mosmont           #+#    #+#             */
-/*   Updated: 2025/02/06 15:17:51 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/10 15:33:25 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	get_output_append_redir(t_cmds *cmds, t_lexer **token)
 	if ((*token)->token_type == DGREAT)
 	{
 		fd = check_file_redir(cmds, (*token)->next->value, 2);
-		if ( fd != -1 && cmds->error_file != -1)
+		if (fd != -1 && cmds->error_file != -1)
 		{
 			if (cmds->output_file)
 				free(cmds->output_file);
