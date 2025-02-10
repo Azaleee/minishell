@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:13:03 by edetoh            #+#    #+#             */
-/*   Updated: 2025/01/31 20:17:15 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/10 15:15:54 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,37 @@ static char	*get_cd_path(t_args *args, char **env)
 	return (path);
 }
 
+static int	change_directory_and_update(char *path, \
+	char ***env, int need_free_path)
+{
+	char	*old_pwd;
+	char	*new_pwd;
+
+	old_pwd = getcwd(NULL, 0);
+	if (chdir(path) == -1)
+	{
+		free(old_pwd);
+		print_cd_error(path);
+		if (need_free_path)
+			free(path);
+		return (g_error_code = 1, FALSE);
+	}
+	set_env_value("OLDPWD", old_pwd, env);
+	free(old_pwd);
+	new_pwd = getcwd(NULL, 0);
+	set_env_value("PWD", new_pwd, env);
+	free(new_pwd);
+	if (need_free_path)
+		free(path);
+	return (g_error_code = 0, TRUE);
+}
+
 int	cd(t_args *args, char ***env)
 {
 	char	*path;
-	char	*pwd;
+	int		need_free_path;
 
+	need_free_path = 0;
 	if (args->next && args->next->next)
 	{
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
@@ -62,17 +88,8 @@ int	cd(t_args *args, char ***env)
 	path = get_cd_path(args, *env);
 	if (!path)
 		return (g_error_code = 1, FALSE);
-	pwd = getcwd(NULL, 0);
-	if (chdir(path) == -1)
-	{
-		free(pwd);
-		print_cd_error(path);
-		return (g_error_code = 1, FALSE);
-	}
-	set_env_value("OLDPWD", pwd, env);
-	free(pwd);
-	pwd = getcwd(NULL, 0);
-	set_env_value("PWD", pwd, env);
-	free(pwd);
-	return (g_error_code = 0, TRUE);
+	if (args->next == NULL || (args->next && ft_strncmp(args->next->arg, \
+	"-", 2) == 0))
+		need_free_path = 1;
+	return (change_directory_and_update(path, env, need_free_path));
 }
