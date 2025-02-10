@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 16:38:17 by mosmont           #+#    #+#             */
-/*   Updated: 2025/01/31 20:53:44 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/10 15:41:46 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ int	print_error(char *message, char **cmd, int exit_code,
 		write(STDERR_FILENO, "\n", 1);
 	if (cmd)
 		free_tab(cmd);
-	free_all(minishell);
-	exit(exit_code);
+	if (minishell->ctrl_c == 130)
+	{
+		free_all(minishell);
+		exit(130);
+	}
+	else
+	{
+		free_all(minishell);
+		exit(exit_code);
+	}
 }

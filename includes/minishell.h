@@ -108,6 +108,7 @@ typedef struct s_minishell
 	int				exit_code;
 	int				*heredoc_counter;
 	char			*pwd;
+	int				ctrl_c;
 }					t_minishell;
 
 /**************************

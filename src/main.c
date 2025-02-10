@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:25:14 by mosmont           #+#    #+#             */
-/*   Updated: 2025/02/06 15:43:46 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/02/10 15:39:08 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_minishell	*init_minishell(char **env)
 	minishell->pipes = NULL;
 	minishell->pid = NULL;
 	minishell->pwd = NULL;
+	minishell->ctrl_c = 0;
 	if (!minishell)
 		exit(EXIT_FAILURE);
 	return (minishell);
